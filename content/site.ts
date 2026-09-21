@@ -69,10 +69,15 @@ export type Hobby = {
 export type Hologram = {
   /**
    * Transparent-background cutout PNG under /public, e.g. "/portrait.png".
-   * Head and shoulders, front-lit, background removed. null renders an
-   * armored-bust placeholder.
+   * Head and shoulders, front-lit, background removed. Swap the file and
+   * the hologram updates; nothing else needs to change. null renders an
+   * armored-bust placeholder in the CSS fallback.
    */
   portrait: string | null;
+  /** True while the image is the stock placeholder; shows a small credit line. */
+  portraitIsPlaceholder: boolean;
+  /** Attribution for the placeholder image. Ignored once portraitIsPlaceholder is false. */
+  portraitCredit?: string;
   /** Word shown in Aurebesh above the bust. Screen readers get the Latin text. */
   wanted: string;
   /** Red neon figure below the bust. */
@@ -107,7 +112,11 @@ export const site = {
     "Portfolio of Omar Soliman. [PLACEHOLDER: one-line description of who you are and what you do].",
 
   hologram: {
-    portrait: null as string | null,
+    /** Replace with your own cutout, e.g. "/portrait.png", then set portraitIsPlaceholder: false. */
+    portrait: "/placeholder-bust.png" as string | null,
+    portraitIsPlaceholder: true,
+    portraitCredit:
+      "Placeholder: Plato bust. Photo Marie-Lan Nguyen (CC BY 2.5), cutout S. Perquin (CC0), Wikimedia Commons",
     wanted: "WANTED",
     bounty: { amount: "20,000", unit: "credits" }, // PLACEHOLDER: pick your number
   } satisfies Hologram,

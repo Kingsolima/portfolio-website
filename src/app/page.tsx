@@ -7,7 +7,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
-import { HoloPuck } from "@/components/HoloPuck";
+import { HoloPuck3D } from "@/components/HoloPuck3D";
 import { Terminal } from "@/components/Terminal";
 
 export default function Home() {
@@ -79,7 +79,7 @@ export default function Home() {
               </div>
             </div>
 
-            <HoloPuck />
+            <HoloPuck3D />
           </div>
         </div>
       </section>

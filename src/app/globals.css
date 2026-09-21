@@ -514,6 +514,140 @@ body {
   line-height: 1;
 }
 
+/* Placeholder credit line, shared by CSS and 3D versions. */
+.holo3d-credit {
+  @apply font-mono text-[0.55rem] uppercase tracking-[0.1em] text-muted/70;
+  max-width: 92%;
+  text-align: center;
+  line-height: 1.5;
+}
+.holo-credit-css {
+  position: absolute;
+  top: 100%;
+  left: 4%;
+  right: 4%;
+  margin-top: 10px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Three.js hologram wrapper                                           */
+/* ------------------------------------------------------------------ */
+.holo3d {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 380px;
+  margin-inline: auto;
+}
+@media (min-width: 1024px) {
+  .holo3d {
+    height: 440px;
+  }
+}
+/* Fade the whole canvas edge into the page so it never reads as a box. */
+.holo3d-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  mask-image: radial-gradient(ellipse 70% 68% at 50% 52%, #000 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 68% at 50% 52%, #000 55%, transparent 100%);
+}
+.holo3d-canvas.is-ready {
+  opacity: 1;
+}
+.holo3d-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: pan-y;
+}
+.holo3d-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: opacity 400ms ease;
+}
+.holo3d-fallback.is-hidden {
+  opacity: 0;
+}
+.holo3d-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.holo3d-ui.is-ready {
+  opacity: 1;
+}
+.holo3d-wanted {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 200px;
+  height: 44px;
+  margin-left: -100px;
+  opacity: 0.3;
+  transform: translateY(-4px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+.holo3d-wanted svg {
+  width: 100%;
+  height: 100%;
+}
+.holo3d-ui.phase-revealing .holo3d-wanted,
+.holo3d-ui.phase-idle .holo3d-wanted {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Bounty resolves as the scan line passes: slide up, unblur, then sit with
+   a faint holographic interference shimmer. */
+.holo3d-bounty {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24%;
+  text-align: center;
+  line-height: 1;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(10px);
+  transition:
+    opacity 700ms ease,
+    filter 700ms ease,
+    transform 700ms ease;
+}
+.holo3d-bounty.is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+/* Sits below the stage and grows downward, never into the puck. */
+.holo3d-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.holo3d-replay {
+  @apply font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted;
+  transition: color 200ms ease;
+}
+.holo3d-replay:hover {
+  color: var(--color-amber);
+}
+
 /* ------------------------------------------------------------------ */
 /* Terminal                                                            */
 /* ------------------------------------------------------------------ */
@@ -721,7 +855,8 @@ body {
 @media print {
   .scanlines,
   .no-print,
-  .holo-stage {
+  .holo-stage,
+  .holo3d {
     display: none !important;
   }
   .reveal-hidden {

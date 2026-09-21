@@ -53,6 +53,8 @@ Omar's call, modelled on the show's puck: a lit metal cylinder on the table proj
 
 The Guild Dossier card was retired; its ident rows moved into a terminal beside the hologram that types a scripted session once on load (`whoami`, `cat status.txt` with the 2027 internship search, `cat about.txt`, `ls skills/`, `./contact.sh`), then stays until refresh. Click skips.
 
+Now a real three.js scene: PBR puck with procedural wear and seams, cyan emitter with standby pulse and activation flash, feathered additive beam, image-on-a-plane hologram shader (slice assembly, scan reveal, scanlines, edge glow, flicker, rare tears, depth ghost), drifting particles, restrained bloom and vignette, contact shadows and cyan spill on the surface. Activation sequence: standby, flash (0.3s), materialize (to 1.1s), reveal (to 2.2s), idle. Click or tap replays; drag rotates slightly; reduced motion renders it still; no WebGL falls back to the CSS version. Placeholder person is a CC-licensed marble bust of Plato until a cutout photo replaces it.
+
 Possible layer on top: the helmet rule. Default the projection to the helmet; on hover or tap, the visor lifts and the face shows underneath.
 
 ---

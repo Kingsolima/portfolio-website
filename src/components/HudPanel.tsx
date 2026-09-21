@@ -19,7 +19,10 @@ export function HudPanel<T extends ElementType = "div">({
   children,
   ...rest
 }: HudPanelProps<T>) {
-  const Tag = (as ?? "div") as ElementType;
+  // Typed as "div" for JSX purposes: the real element is whatever `as` says,
+  // but a generic ElementType would pull in every intrinsic element's props
+  // (including three.js ones from R3F) and collapse `children` to never.
+  const Tag = (as ?? "div") as "div";
   return (
     <Tag
       className={`hud-panel ${interactive ? "hud-panel-interactive" : ""} ${className}`}
