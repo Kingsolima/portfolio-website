@@ -4,8 +4,8 @@ import { HudPanel } from "./HudPanel";
 import { TagList } from "./Tag";
 
 /**
- * Bounty Guild dossier: the hero's "who is this" card. Rendered as a teal
- * hologram so it reads as a projection sitting inside the amber HUD.
+ * Bounty Guild dossier: the hero's "who is this" card. A tracking puck on
+ * the left projects the portrait as a teal hologram; ident rows sit beside it.
  */
 export function Dossier() {
   const d = site.dossier;
@@ -32,26 +32,24 @@ export function Dossier() {
         <span className="text-muted">Puck {d.puck}</span>
       </div>
 
-      {/* Portrait + ident */}
-      <div className="mt-5 grid grid-cols-[104px_1fr] gap-5 sm:grid-cols-[124px_1fr]">
-        <div className="holo-portrait aspect-[4/5] border border-teal/40">
-          {d.portrait ? (
-            <Image
-              src={d.portrait}
-              alt={`Portrait of ${site.name}`}
-              fill
-              sizes="124px"
-              className="object-cover opacity-90 mix-blend-luminosity"
-            />
-          ) : (
-            <HelmetSilhouette />
-          )}
-          <span
-            aria-hidden
-            className="absolute bottom-1.5 left-1.5 font-mono text-[0.55rem] uppercase tracking-[0.16em] text-teal/80"
-          >
-            Holo
-          </span>
+      {/* Puck projection + ident */}
+      <div className="mt-5 grid grid-cols-[116px_1fr] gap-5 sm:grid-cols-[140px_1fr]">
+        <div className="puck-stage self-start">
+          <div className="puck-holo">
+            {d.portrait ? (
+              <Image
+                src={d.portrait}
+                alt={`Hologram portrait of ${site.name}`}
+                fill
+                sizes="140px"
+                className="object-cover"
+              />
+            ) : (
+              <HelmetSilhouette />
+            )}
+          </div>
+          <div aria-hidden className="puck-cone" />
+          <div aria-hidden className="puck" />
         </div>
 
         <dl className="grid content-start gap-y-2 font-mono text-xs">
@@ -81,13 +79,13 @@ export function Dossier() {
   );
 }
 
-/** Placeholder portrait: helmet outline drawn in teal projection lines. */
+/** Placeholder projection: helmet outline, shown until a portrait is set. */
 function HelmetSilhouette() {
   return (
     <svg
       aria-hidden
       viewBox="0 0 64 80"
-      className="absolute inset-0 h-full w-full p-3 text-teal"
+      className="absolute inset-0 h-full w-full p-4 text-teal"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.4"

@@ -51,6 +51,15 @@
       top: 100%;
     }
   }
+  @keyframes holo-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
   /* Occasional tiny dips, like a hologram losing a frame. */
   @keyframes holo-flicker {
     0%,
@@ -261,29 +270,116 @@ body {
   border-color: var(--holo);
 }
 
-/* Portrait well: teal glow + projection lines over whatever sits inside. */
-.holo-portrait {
+/* ------------------------------------------------------------------ */
+/* Bounty puck: a disc on the "table" projecting the portrait upward   */
+/* ------------------------------------------------------------------ */
+.puck-stage {
   position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(
-      ellipse 70% 55% at 50% 35%,
-      color-mix(in oklab, var(--color-teal) 26%, transparent),
-      transparent 75%
-    ),
-    var(--color-void);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.holo-portrait::after {
+
+/* The projection itself. Edges fade out so it reads as light, not a photo. */
+.puck-holo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse 75% 60% at 50% 45%,
+    color-mix(in oklab, var(--color-teal) 30%, transparent),
+    transparent 80%
+  );
+  mask-image: radial-gradient(
+    ellipse 66% 60% at 50% 50%,
+    #000 38%,
+    transparent 96%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 66% 60% at 50% 50%,
+    #000 38%,
+    transparent 96%
+  );
+  animation:
+    holo-float 6s ease-in-out infinite,
+    holo-flicker 5s steps(1, end) infinite;
+}
+/* Any image or SVG dropped inside gets the hologram treatment. */
+.puck-holo img,
+.puck-holo svg {
+  filter: grayscale(1) contrast(1.05) brightness(1.15);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+}
+/* Horizontal projection lines. */
+.puck-holo::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background-image: repeating-linear-gradient(
     to bottom,
-    color-mix(in oklab, var(--color-teal) 22%, transparent) 0 1px,
-    transparent 1px 4px
+    color-mix(in oklab, var(--color-teal) 28%, transparent) 0 1px,
+    transparent 1px 3px
   );
   mix-blend-mode: screen;
+}
+
+/* Light cone from the puck's emitter up to the projection. */
+.puck-cone {
+  width: 100%;
+  height: 30px;
+  margin-top: -10px;
+  pointer-events: none;
+  clip-path: polygon(6% 0, 94% 0, 60% 100%, 40% 100%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-teal) 10%, transparent),
+    color-mix(in oklab, var(--color-teal) 55%, transparent)
+  );
+  opacity: 0.8;
+}
+
+/* The disc: brushed metal top, thin rim, teal emitter ring and lamp. */
+.puck {
+  position: relative;
+  width: 62%;
+  height: 18px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 35%,
+    #4a545c 0%,
+    #2a3136 45%,
+    #14181b 100%
+  );
+  box-shadow:
+    0 3px 0 0 #1c2124,
+    0 5px 0 0 #3a434a,
+    0 14px 18px rgba(0, 0, 0, 0.65),
+    0 -2px 22px color-mix(in oklab, var(--color-teal) 35%, transparent);
+}
+.puck::before {
+  content: "";
+  position: absolute;
+  inset: 3px 7px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--color-teal) 75%, transparent);
+  box-shadow: inset 0 0 8px color-mix(in oklab, var(--color-teal) 45%, transparent);
+}
+.puck::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  box-shadow: 0 0 10px var(--color-teal);
+  animation: var(--animate-pulse-soft);
 }
 
 /* Full-viewport CRT scanlines + soft vignette. Purely decorative. */
@@ -447,7 +543,9 @@ body {
   }
   .hud-cursor::after,
   .visor-sweep,
-  .holo {
+  .holo,
+  .puck-holo,
+  .puck::after {
     animation: none;
   }
   .visor-sweep {

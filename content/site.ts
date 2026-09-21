@@ -94,7 +94,11 @@ export const site = {
   dossier: {
     /** Puck / dossier number, purely decorative. */
     puck: "001",
-    /** Path under /public, e.g. "/portrait.jpg". null renders a helmet silhouette. */
+    /**
+     * Path under /public, e.g. "/portrait.jpg". Projected as a hologram from
+     * the puck, so a plain head-and-shoulders shot on a dark or plain
+     * background works best. null renders a helmet silhouette.
+     */
     portrait: null as string | null,
     /** Any short ID-looking string. Initials + city + year works well. */
     chainCode: "[PLACEHOLDER: OS-CAI-26]",

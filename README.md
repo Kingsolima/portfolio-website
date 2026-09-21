@@ -24,7 +24,7 @@ Everything you'd want to change lives in three places:
 | What | Where |
 |---|---|
 | Name, role, tagline, dossier card, about, hobbies, projects, experience, resume, socials | [`content/site.ts`](content/site.ts) |
-| Portrait for the dossier card (optional) | `public/portrait.jpg`, then set `dossier.portrait: "/portrait.jpg"` in `site.ts` |
+| Portrait projected from the puck (optional) | `public/portrait.jpg`, then set `dossier.portrait: "/portrait.jpg"` in `site.ts`. Head-and-shoulders on a plain background works best. |
 | Blog posts | [`content/blog/*.mdx`](content/blog/) |
 | Resume PDF | `public/resume.pdf` (replace the placeholder file) |
 
