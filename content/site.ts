@@ -11,7 +11,7 @@ export type Project = {
   title: string;
   /** One or two sentences: what it is and why it matters. */
   summary: string;
-  /** Tech / topic tags, 2–5 is a good range. */
+  /** Tech / topic tags, 2 to 5 is a good range. */
   tags: string[];
   repo?: string;
   live?: string;
@@ -64,6 +64,14 @@ export type Hobby = {
   blurb: string;
 };
 
+export type Dossier = {
+  puck: string;
+  portrait: string | null;
+  chainCode: string;
+  bounty: string;
+  specialties: string[];
+};
+
 export const site = {
   /** Used for <title>, OG tags and the canonical URL. Set to your real domain. */
   url: "https://example.com",
@@ -77,12 +85,30 @@ export const site = {
     "[PLACEHOLDER: One sentence about what you build and what you care about.]",
   /** <meta description>. Keep under ~160 characters. */
   description:
-    "Portfolio of Omar Soliman — [PLACEHOLDER: one-line description of who you are and what you do].",
+    "Portfolio of Omar Soliman. [PLACEHOLDER: one-line description of who you are and what you do].",
+
+  /**
+   * The Bounty Guild dossier card in the hero. This is the "introduce me"
+   * block: portrait, ident rows, and what you're after.
+   */
+  dossier: {
+    /** Puck / dossier number, purely decorative. */
+    puck: "001",
+    /** Path under /public, e.g. "/portrait.jpg". null renders a helmet silhouette. */
+    portrait: null as string | null,
+    /** Any short ID-looking string. Initials + city + year works well. */
+    chainCode: "[PLACEHOLDER: OS-CAI-26]",
+    /** One line on what you're looking for. This is the "bounty". */
+    bounty:
+      "[PLACEHOLDER: e.g. A team that ships real things to real users, and lets me own the hard parts.]",
+    /** 3 to 5 top skills or interests. */
+    specialties: ["TypeScript", "React", "Systems", "[PLACEHOLDER]"],
+  } satisfies Dossier,
 
   about: [
-    "[PLACEHOLDER: Paragraph 1 — what drives you. What kind of problems pull you in, what you love about building things.]",
-    "[PLACEHOLDER: Paragraph 2 — how you work. Your values, how you learn, what you're chasing next.]",
-    "[PLACEHOLDER: Paragraph 3 — the Mandalorian bit. Why the show, the creed, the craft of it resonates with you. Keep it to one paragraph — charming, not cosplay.]",
+    "[PLACEHOLDER: Paragraph 1, what drives you. What kind of problems pull you in, what you love about building things.]",
+    "[PLACEHOLDER: Paragraph 2, how you work. Your values, how you learn, what you're chasing next.]",
+    "[PLACEHOLDER: Paragraph 3, the Mandalorian bit. Why the show, the creed, the craft of it resonates with you. Keep it to one paragraph: charming, not cosplay.]",
   ],
 
   hobbies: [
@@ -101,7 +127,7 @@ export const site = {
     {
       name: "Star Wars",
       blurb:
-        "[PLACEHOLDER: Favourite era, favourite ship, hot take — whatever you'd argue about at 2am.]",
+        "[PLACEHOLDER: Favourite era, favourite ship, hot take. Whatever you'd argue about at 2am.]",
     },
   ] satisfies Hobby[],
 
@@ -171,7 +197,7 @@ export const site = {
     /** Path under /public. Replace the placeholder PDF with your real one. */
     pdf: "/resume.pdf",
     summary:
-      "[PLACEHOLDER: 2–3 sentence professional summary. Who you are, what you're strongest at, what you're looking for.]",
+      "[PLACEHOLDER: 2 to 3 sentence professional summary. Who you are, what you're strongest at, what you're looking for.]",
     skills: [
       {
         group: "Languages",
@@ -190,7 +216,7 @@ export const site = {
       {
         school: "[PLACEHOLDER: University]",
         degree: "[PLACEHOLDER: B.Sc. Computer Science]",
-        years: "[PLACEHOLDER: YYYY – YYYY]",
+        years: "[PLACEHOLDER: YYYY to YYYY]",
         notes: "[PLACEHOLDER: Honours, thesis, or leave blank]",
       },
     ] satisfies Education[],

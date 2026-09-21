@@ -15,7 +15,7 @@ export function ExperienceItem({
   /** h2 when the item sits directly under a page h1; h3 inside a section. */
   headingLevel?: "h2" | "h3";
 }) {
-  const period = `${item.start} — ${item.end ?? "Present"}`;
+  const period = `${item.start} → ${item.end ?? "Present"}`;
   return (
     <li className="relative pl-8 sm:pl-10">
       {/* Timeline rail marker */}

@@ -14,7 +14,7 @@ type Props = {
   className?: string;
 };
 
-/** `// 02 — PROJECTS` eyebrow + title. Every page and home section uses this. */
+/** `// 02 · PROJECTS` eyebrow + title. Every page and home section uses this. */
 export function SectionHeader({
   index,
   label,
@@ -31,7 +31,7 @@ export function SectionHeader({
         <span aria-hidden>{"// "}</span>
         {index}
         <span aria-hidden className="mx-2 text-line-strong">
-          —
+          ·
         </span>
         {label}
       </p>

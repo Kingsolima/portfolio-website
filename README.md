@@ -1,4 +1,4 @@
-# Portfolio — Visor HUD
+# Portfolio: Visor HUD
 
 Personal portfolio for Omar Soliman. Dark, Mandalorian-helmet-HUD inspired: amber accents, corner brackets, monospace telemetry. Built with Next.js (App Router) + Tailwind CSS v4, exported as a fully static site.
 
@@ -23,7 +23,8 @@ Everything you'd want to change lives in three places:
 
 | What | Where |
 |---|---|
-| Name, role, tagline, about, hobbies, projects, experience, resume, socials | [`content/site.ts`](content/site.ts) |
+| Name, role, tagline, dossier card, about, hobbies, projects, experience, resume, socials | [`content/site.ts`](content/site.ts) |
+| Portrait for the dossier card (optional) | `public/portrait.jpg`, then set `dossier.portrait: "/portrait.jpg"` in `site.ts` |
 | Blog posts | [`content/blog/*.mdx`](content/blog/) |
 | Resume PDF | `public/resume.pdf` (replace the placeholder file) |
 
@@ -50,16 +51,16 @@ The filename is the URL (`/blog/my-post/`). Add `draft: true` to hide a post wit
 
 The build produces plain HTML/CSS/JS in `out/`. No server, no adapters.
 
-**Netlify** — connect the repo; `netlify.toml` already sets the build command, publish dir, and Node 22.
+**Netlify**: connect the repo; `netlify.toml` already sets the build command, publish dir, and Node 22.
 
-**Cloudflare Pages** — connect the repo and set:
+**Cloudflare Pages**: connect the repo and set:
 - Build command: `npm run build`
 - Build output directory: `out`
 - Environment variable: `NODE_VERSION` = `22`
 
-**Anything else** (GitHub Pages, S3, nginx) — upload `out/`. Routes use trailing slashes (`/blog/slug/index.html`) so any static host resolves them.
+**Anything else** (GitHub Pages, S3, nginx): upload `out/`. Routes use trailing slashes (`/blog/slug/index.html`) so any static host resolves them.
 
-Before going live, set `url` in `content/site.ts` to your real domain — it drives canonical and Open Graph URLs.
+Before going live, set `url` in `content/site.ts` to your real domain; it drives canonical and Open Graph URLs.
 
 ## Structure
 

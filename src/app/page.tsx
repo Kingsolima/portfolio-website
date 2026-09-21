@@ -7,7 +7,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
-import { Telemetry } from "@/components/Telemetry";
+import { Dossier } from "@/components/Dossier";
 
 export default function Home() {
   const featured = site.projects.filter((p) => p.featured).slice(0, 3);
@@ -19,31 +19,61 @@ export default function Home() {
       {/* Hero                                                              */}
       {/* ---------------------------------------------------------------- */}
       <section className="relative overflow-hidden border-b border-line">
+        {/* Visor layers: grid, helmet shading, edge ticks, scan sweep */}
         <div aria-hidden className="hud-grid absolute inset-0" />
-        <div className="relative mx-auto max-w-5xl px-4 pt-16 pb-20 sm:px-6 sm:pt-24 sm:pb-28">
-          <Telemetry
-            rows={[
-              { key: "Operator", value: site.name },
-              { key: "Status", value: site.status, tone: "teal" },
-              { key: "Class", value: site.role },
-              { key: "Sector", value: site.location },
-            ]}
-          />
+        <div aria-hidden className="visor-shade" />
+        <div aria-hidden className="visor-ticks" />
+        <div aria-hidden className="visor-sweep" />
 
-          <h1 className="mt-10 text-5xl font-semibold tracking-[-0.03em] sm:text-7xl">
-            {site.name}
-          </h1>
-          <p className="hud-cursor mt-5 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-            {site.tagline}
-          </p>
+        <div className="relative mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-16 sm:pb-28">
+          {/* Visor readouts */}
+          <div
+            aria-hidden
+            className="mb-10 flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted"
+          >
+            <span>
+              <span className="text-amber-dim">┌ </span>
+              Tgt lock
+            </span>
+            <span className="hidden sm:inline">
+              Rng 00.42
+              <span className="mx-2 text-line-strong">·</span>
+              Brg 117°
+            </span>
+            <span>
+              Sys nominal
+              <span className="text-amber-dim"> ┐</span>
+            </span>
+          </div>
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            <HudButton href="/projects" variant="primary">
-              View projects
-            </HudButton>
-            <HudButton href={site.resume.pdf} download>
-              Resume ↓
-            </HudButton>
+          <div className="grid items-center gap-12 md:grid-cols-[1fr_minmax(300px,400px)]">
+            <div>
+              <p className="hud-label text-amber">
+                <span aria-hidden>{"// "}</span>
+                00
+                <span aria-hidden className="mx-2 text-line-strong">
+                  ·
+                </span>
+                Ident confirmed
+              </p>
+              <h1 className="mt-5 text-5xl font-semibold tracking-[-0.03em] sm:text-7xl">
+                {site.name}
+              </h1>
+              <p className="hud-cursor mt-5 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
+                {site.tagline}
+              </p>
+
+              <div className="mt-10 flex flex-wrap gap-3">
+                <HudButton href="/projects" variant="primary">
+                  View projects
+                </HudButton>
+                <HudButton href={site.resume.pdf} download>
+                  Resume ↓
+                </HudButton>
+              </div>
+            </div>
+
+            <Dossier />
           </div>
         </div>
       </section>

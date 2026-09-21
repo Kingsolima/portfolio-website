@@ -52,7 +52,7 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
           <span aria-hidden>{"// "}</span>
           Transmission
           <span aria-hidden className="mx-2 text-line-strong">
-            —
+            ·
           </span>
           <time dateTime={post.date} className="text-muted normal-case tracking-[0.08em]">
             {formatDate(post.date)}
