@@ -1,0 +1,44 @@
+---
+title: "Transmission 001: Hello, world"
+date: "2026-09-21"
+summary: "Why this site exists, what I plan to write about, and how the whole thing is put together."
+tags: ["meta", "nextjs"]
+---
+
+This is the first post. Replace it, or keep it as a note on how the blog works.
+
+## How posts work
+
+Every post is a single `.mdx` file in `content/blog/`. The filename becomes the URL, so `hello-world.mdx` lives at `/blog/hello-world/`. The block at the top of the file (between the `---` lines) is the **frontmatter**: title, date, a one-line summary, and tags.
+
+Add `draft: true` to the frontmatter and the post disappears from the site until you remove it.
+
+## Markdown, plus a little extra
+
+Everything you'd expect from markdown works: **bold**, _italic_, [links](https://nextjs.org), lists, quotes.
+
+> "I can bring you in warm, or I can bring you in cold."
+>
+> Sound advice for handling production incidents.
+
+Code blocks are highlighted at build time, so there is zero JavaScript shipped for syntax colouring:
+
+```ts title="lib/blog.ts"
+export function getAllPosts(): Post[] {
+  return readdirSync(BLOG_DIR)
+    .filter((f) => f.endsWith(".mdx"))
+    .map(loadPost)
+    .filter((p) => !p.draft)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+```
+
+Inline code like `npm run build` also gets the treatment.
+
+## What I'll write about
+
+- [PLACEHOLDER: topic one]
+- [PLACEHOLDER: topic two]
+- Occasionally, Star Wars.
+
+This is the Way.

@@ -1,0 +1,38 @@
+---
+title: "Why beskar is a good metaphor for boring technology"
+date: "2026-09-14"
+summary: "Mandalorians forge armour from one unglamorous metal for a reason. There's a lesson in there about picking your stack."
+tags: ["engineering", "opinion"]
+---
+
+[PLACEHOLDER: This is a sample post. Replace or delete it.]
+
+Beskar isn't exciting. It doesn't glow. It's not the lightest alloy in the galaxy and nobody writes ballads about it. But it stops a lightsaber, and Mandalorians have been forging it the same way for a very long time.
+
+## Pick the metal that stops the blade
+
+Most of the systems I'm proudest of were built on tools that felt slightly dull at the time:
+
+1. A relational database instead of the new thing.
+2. A queue that has been around for a decade.
+3. Plain HTML where a framework would have been overkill.
+
+None of those choices made a good conference talk. All of them are still running.
+
+## The forge matters more than the ore
+
+The Armorer doesn't improvise. There's a process, there are rituals, and the result is armour that fits one person perfectly. That's the part worth copying: **consistent process over clever material**.
+
+```python
+def choose_stack(requirements: list[str]) -> str:
+    # Boring is a feature, not a compromise.
+    if "must survive contact with users" in requirements:
+        return "beskar"
+    return "shiny_new_alloy"
+```
+
+## Where I'll break my own rule
+
+Occasionally you need a jetpack. When the boring option genuinely can't do the job, reach for the new thing — but know that you're doing it, and know what it costs.
+
+This is the Way.

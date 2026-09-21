@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="10" fill="#0b0d0e"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="9" fill="none" stroke="#2a3136" stroke-width="1"/>
+  <!-- Helmet silhouette -->
+  <path d="M14 30c0-11 8-19 18-19s18 8 18 19v9c0 6-4 10-9 12l-9 3-9-3c-5-2-9-6-9-12z" fill="#1c2124" stroke="#3a434a" stroke-width="1.5"/>
+  <!-- T-visor -->
+  <path d="M18 27h28v5H35v16h-6V32H18z" fill="#ffb03a"/>
+</svg>

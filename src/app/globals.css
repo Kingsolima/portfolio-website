@@ -1,0 +1,353 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — the "Visor HUD" system                              */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-void: #0b0d0e;
+  --color-panel: #14181b;
+  --color-panel-raised: #1c2124;
+  --color-line: #2a3136;
+  --color-line-strong: #3a434a;
+  --color-amber: #ffb03a;
+  --color-amber-dim: #b87a22;
+  --color-teal: #4fd1c5;
+  --color-fg: #e6e8ea;
+  --color-muted: #8a9299;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-cursor-blink: cursor-blink 1.1s steps(2, start) infinite;
+
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+  @keyframes cursor-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes bracket-in {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-void font-sans text-fg antialiased;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-amber) 35%, transparent);
+  color: var(--color-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ */
+/* HUD primitives                                                      */
+/* ------------------------------------------------------------------ */
+
+/* Small uppercase monospace label used for telemetry, indices, nav.
+   Declared as a utility so it can be composed via @apply below. */
+@utility hud-label {
+  @apply font-mono text-xs uppercase tracking-[0.14em] text-muted;
+}
+
+/* Card / panel: 1px hairline, four amber corner brackets. */
+.hud-panel {
+  @apply relative border border-line bg-panel;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.hud-panel-interactive:hover,
+.hud-panel-interactive:focus-within {
+  border-color: var(--color-amber-dim);
+  background-color: var(--color-panel-raised);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-amber) 40%, transparent),
+    0 0 24px color-mix(in oklab, var(--color-amber) 10%, transparent);
+}
+
+.hud-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 0 solid var(--color-amber);
+  pointer-events: none;
+  animation: bracket-in 320ms ease-out both;
+}
+.hud-corner-tl {
+  top: -1px;
+  left: -1px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  transform-origin: top left;
+}
+.hud-corner-tr {
+  top: -1px;
+  right: -1px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+  transform-origin: top right;
+}
+.hud-corner-bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+  transform-origin: bottom left;
+}
+.hud-corner-br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+  transform-origin: bottom right;
+}
+
+/* Faint grid behind the hero, fading out toward the bottom. */
+.hud-grid {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+}
+
+/* Full-viewport CRT scanlines + soft vignette. Purely decorative. */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035) 0px,
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+/* Blinking block cursor after the hero tagline. */
+.hud-cursor::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: -0.12em;
+  background: var(--color-amber);
+  animation: var(--animate-cursor-blink);
+}
+
+/* Scroll-reveal: SSR renders visible; JS hides below-fold items then reveals. */
+.reveal {
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Blog prose                                                          */
+/* ------------------------------------------------------------------ */
+.prose-hud {
+  @apply text-[1.05rem] leading-[1.75] text-fg/90;
+}
+.prose-hud > * + * {
+  margin-top: 1.25em;
+}
+.prose-hud h2,
+.prose-hud h3 {
+  @apply font-sans font-semibold tracking-tight text-fg;
+  margin-top: 2.25em;
+}
+.prose-hud h2 {
+  @apply text-2xl;
+}
+.prose-hud h3 {
+  @apply text-xl;
+}
+.prose-hud h2::before,
+.prose-hud h3::before {
+  content: "// ";
+  color: var(--color-amber);
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+.prose-hud a {
+  @apply text-teal underline decoration-teal/40 underline-offset-4;
+}
+.prose-hud a:hover {
+  @apply decoration-teal;
+}
+.prose-hud strong {
+  @apply font-semibold text-fg;
+}
+.prose-hud ul,
+.prose-hud ol {
+  padding-left: 1.5em;
+}
+.prose-hud ul {
+  list-style: square;
+}
+.prose-hud ol {
+  list-style: decimal;
+}
+.prose-hud li + li {
+  margin-top: 0.4em;
+}
+.prose-hud li::marker {
+  color: var(--color-amber-dim);
+}
+.prose-hud blockquote {
+  @apply border-l-2 border-amber-dim pl-5 text-muted italic;
+}
+.prose-hud hr {
+  @apply border-line;
+}
+.prose-hud :not(pre) > code {
+  @apply rounded-sm bg-panel-raised px-1.5 py-0.5 font-mono text-[0.9em] text-amber;
+}
+.prose-hud pre {
+  @apply overflow-x-auto border border-line bg-panel p-4 font-mono text-sm leading-relaxed;
+}
+.prose-hud pre code {
+  display: grid;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.prose-hud pre [data-line] {
+  padding: 0 0.25rem;
+}
+.prose-hud figure[data-rehype-pretty-code-figure] {
+  margin: 0;
+}
+.prose-hud figcaption[data-rehype-pretty-code-title] {
+  @apply hud-label border border-b-0 border-line bg-panel-raised px-4 py-2 text-amber-dim;
+}
+.prose-hud img {
+  @apply border border-line;
+}
+.prose-hud table {
+  @apply w-full border-collapse text-sm;
+}
+.prose-hud th,
+.prose-hud td {
+  @apply border border-line px-3 py-2 text-left;
+}
+.prose-hud th {
+  @apply hud-label bg-panel-raised;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion & print                                                      */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal-hidden {
+    opacity: 1;
+    transform: none;
+  }
+  .hud-cursor::after {
+    animation: none;
+  }
+}
+
+@media print {
+  .scanlines,
+  .no-print {
+    display: none !important;
+  }
+  .reveal-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    color-scheme: light;
+  }
+  body {
+    background: #fff;
+    color: #111;
+  }
+  .hud-panel {
+    background: #fff;
+    border-color: #bbb;
+    box-shadow: none;
+  }
+  .hud-corner {
+    border-color: #444;
+  }
+  .hud-label,
+  .text-muted {
+    color: #555 !important;
+  }
+  .text-fg,
+  .text-amber,
+  .text-teal {
+    color: #111 !important;
+  }
+  a {
+    color: #111 !important;
+    text-decoration: none;
+  }
+}
