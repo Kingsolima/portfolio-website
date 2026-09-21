@@ -4,6 +4,7 @@
  *
  * Blog posts live separately as MDX files in `content/blog/`.
  * The resume PDF lives at `public/resume.pdf`.
+ * The hologram portrait (optional) lives at `public/portrait.png`.
  */
 
 export type Project = {
@@ -64,12 +65,31 @@ export type Hobby = {
   blurb: string;
 };
 
-export type Dossier = {
-  puck: string;
+/** The bounty-puck hologram in the hero. */
+export type Hologram = {
+  /**
+   * Transparent-background cutout PNG under /public, e.g. "/portrait.png".
+   * Head and shoulders, front-lit, background removed. null renders an
+   * armored-bust placeholder.
+   */
   portrait: string | null;
-  chainCode: string;
-  bounty: string;
-  specialties: string[];
+  /** Word shown in Aurebesh above the bust. Screen readers get the Latin text. */
+  wanted: string;
+  /** Red neon figure below the bust. */
+  bounty: { amount: string; unit: string };
+};
+
+/** One typed command and the lines it prints. */
+export type TerminalCommand = {
+  cmd: string;
+  output: string[];
+};
+
+export type Terminal = {
+  user: string;
+  host: string;
+  /** Typed in order on page load. Commands type at human speed, output lands faster. */
+  session: TerminalCommand[];
 };
 
 export const site = {
@@ -79,35 +99,57 @@ export const site = {
   /** Short mono identifier shown in the nav. */
   handle: "OMAR.SOLIMAN",
   role: "[PLACEHOLDER: Software Engineer]",
-  status: "Open to work",
+  /** Nav status pill. */
+  status: "Seeking 2027 internships",
   location: "[PLACEHOLDER: City, Country]",
-  tagline:
-    "[PLACEHOLDER: One sentence about what you build and what you care about.]",
   /** <meta description>. Keep under ~160 characters. */
   description:
     "Portfolio of Omar Soliman. [PLACEHOLDER: one-line description of who you are and what you do].",
 
-  /**
-   * The Bounty Guild dossier card in the hero. This is the "introduce me"
-   * block: portrait, ident rows, and what you're after.
-   */
-  dossier: {
-    /** Puck / dossier number, purely decorative. */
-    puck: "001",
-    /**
-     * Path under /public, e.g. "/portrait.jpg". Projected as a hologram from
-     * the puck, so a plain head-and-shoulders shot on a dark or plain
-     * background works best. null renders a helmet silhouette.
-     */
+  hologram: {
     portrait: null as string | null,
-    /** Any short ID-looking string. Initials + city + year works well. */
-    chainCode: "[PLACEHOLDER: OS-CAI-26]",
-    /** One line on what you're looking for. This is the "bounty". */
-    bounty:
-      "[PLACEHOLDER: e.g. A team that ships real things to real users, and lets me own the hard parts.]",
-    /** 3 to 5 top skills or interests. */
-    specialties: ["TypeScript", "React", "Systems", "[PLACEHOLDER]"],
-  } satisfies Dossier,
+    wanted: "WANTED",
+    bounty: { amount: "20,000", unit: "credits" }, // PLACEHOLDER: pick your number
+  } satisfies Hologram,
+
+  terminal: {
+    user: "omar",
+    host: "razor-crest",
+    session: [
+      {
+        cmd: "whoami",
+        output: [
+          "Omar Soliman",
+          "[PLACEHOLDER: B.Sc. Computer Science, University, Class of 2028]",
+          "Sector: [PLACEHOLDER: City, Country]",
+        ],
+      },
+      {
+        cmd: "cat status.txt",
+        output: [
+          "STATUS: Seeking Summer 2027 software engineering internships",
+          "Open to: [PLACEHOLDER: on-site, hybrid, remote]",
+          "Available: [PLACEHOLDER: May 2027]",
+        ],
+      },
+      {
+        cmd: "cat about.txt",
+        output: [
+          "[PLACEHOLDER: What you build and why, one line.]",
+          "[PLACEHOLDER: How you work, one line.]",
+          "[PLACEHOLDER: The Mandalorian bit, one line.]",
+        ],
+      },
+      {
+        cmd: "ls skills/",
+        output: ["typescript/  react/  python/  [placeholder]/"],
+      },
+      {
+        cmd: "./contact.sh",
+        output: ["Comms channels open at /socials", "Resume at /resume"],
+      },
+    ],
+  } satisfies Terminal,
 
   about: [
     "[PLACEHOLDER: Paragraph 1, what drives you. What kind of problems pull you in, what you love about building things.]",

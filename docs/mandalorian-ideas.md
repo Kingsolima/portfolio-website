@@ -48,8 +48,10 @@ Din's armor is dented and scratched; the site is spotless. Mandalorian is analog
 - Slightly worn corner brackets (a tiny notch or break in one arm).
 - Occasional rivet dots at panel corners.
 
-### 5. Portrait as a puck hologram (done)
-Omar's call: the dossier portrait is a bounty puck on the table projecting the photo upward as a teal hologram, with a light cone, projection lines, a slow float and the occasional dropped frame. Until a photo is set, the projection is the helmet silhouette.
+### 5. Bounty puck hologram + terminal intro (done)
+Omar's call, modelled on the show's puck: a lit metal cylinder on the table projects the portrait upward as a cyan hologram (light cone, projection lines, slow float, dropped frames, a rare horizontal tear). Red neon Aurebesh "WANTED" above, red neon bounty in credits below. Until a cutout photo exists, the projection is an armored bust.
+
+The Guild Dossier card was retired; its ident rows moved into a terminal beside the hologram that types a scripted session once on load (`whoami`, `cat status.txt` with the 2027 internship search, `cat about.txt`, `ls skills/`, `./contact.sh`), then stays until refresh. Click skips.
 
 Possible layer on top: the helmet rule. Default the projection to the helmet; on hover or tap, the visor lifts and the face shows underneath.
 

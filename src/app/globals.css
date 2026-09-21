@@ -12,6 +12,7 @@
   --color-amber: #ffb03a;
   --color-amber-dim: #b87a22;
   --color-teal: #4fd1c5;
+  --color-neon: #ff4d4d;
   --color-fg: #e6e8ea;
   --color-muted: #8a9299;
 
@@ -22,7 +23,6 @@
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
   --animate-cursor-blink: cursor-blink 1.4s ease-in-out infinite;
   --animate-visor-sweep: visor-sweep 9s linear infinite;
-  --animate-holo-flicker: holo-flicker 7s steps(1, end) infinite;
 
   @keyframes pulse-soft {
     0%,
@@ -43,6 +43,16 @@
       opacity: 0.08;
     }
   }
+  @keyframes bracket-in {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
   @keyframes visor-sweep {
     from {
       top: -2px;
@@ -57,38 +67,75 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
     }
   }
   /* Occasional tiny dips, like a hologram losing a frame. */
   @keyframes holo-flicker {
     0%,
     100% {
-      opacity: 1;
+      opacity: 0.88;
     }
     7% {
-      opacity: 0.86;
+      opacity: 0.7;
     }
     8% {
-      opacity: 1;
+      opacity: 0.88;
     }
     53% {
-      opacity: 1;
+      opacity: 0.88;
     }
     54% {
-      opacity: 0.92;
+      opacity: 0.78;
     }
     55% {
-      opacity: 1;
+      opacity: 0.88;
     }
   }
-  @keyframes bracket-in {
-    from {
-      transform: scale(0);
+  /* A single horizontal slice of the projection tears sideways, rarely. */
+  @keyframes holo-glitch {
+    0%,
+    95.5%,
+    98.5%,
+    100% {
       opacity: 0;
+      transform: translateX(0);
     }
-    to {
-      transform: scale(1);
+    96% {
+      opacity: 0.9;
+      transform: translateX(5px);
+    }
+    97% {
+      opacity: 0.9;
+      transform: translateX(-4px);
+    }
+    98% {
+      opacity: 0.7;
+      transform: translateX(2px);
+    }
+  }
+  /* Neon tube: mostly steady, two brief dips. */
+  @keyframes neon-flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    41% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0.72;
+    }
+    43% {
+      opacity: 1;
+    }
+    71% {
+      opacity: 1;
+    }
+    72% {
+      opacity: 0.85;
+    }
+    72.6% {
       opacity: 1;
     }
   }
@@ -251,135 +298,250 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Holo: teal hologram treatment for the guild dossier                  */
+/* Bounty puck hologram                                                */
+/* Layers, bottom to top: ambient, shadow, puck side, puck top, cone,  */
+/* bust, glitch copy, bounty, wanted.                                  */
 /* ------------------------------------------------------------------ */
-.holo {
-  --holo: var(--color-teal);
-  border-color: color-mix(in oklab, var(--holo) 40%, var(--color-line));
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklab, var(--holo) 9%, var(--color-panel)),
-    var(--color-panel) 70%
+.holo-stage {
+  position: relative;
+  height: 380px;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+@media (min-width: 1024px) {
+  .holo-stage {
+    height: 440px;
+  }
+}
+
+.holo-ambient {
+  position: absolute;
+  inset: -10% -25%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 55% 55% at 50% 58%,
+    color-mix(in oklab, var(--color-teal) 14%, transparent),
+    transparent 70%
+  );
+}
+
+.holo-shadow {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  z-index: 1;
+  width: 200px;
+  height: 26px;
+  margin-left: -100px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75), transparent 70%);
+  filter: blur(4px);
+}
+
+/* Cylinder side: light brushed metal with fine vertical hairlines. */
+.puck-side {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  z-index: 2;
+  width: 124px;
+  height: 40px;
+  margin-left: -62px;
+  border-radius: 62px / 16px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(90deg, #4b535b 0%, #9aa3ab 22%, #d5dadf 48%, #9aa3ab 74%, #454d55 100%);
+  box-shadow:
+    inset 0 -6px 10px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* Cylinder top face: lit cyan disc with an emitter ring and lamp. */
+.puck-top {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  z-index: 3;
+  width: 124px;
+  height: 32px;
+  margin-left: -62px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in oklab, var(--color-teal) 85%, white) 0%,
+    color-mix(in oklab, var(--color-teal) 60%, #1c2124) 35%,
+    #2a3136 70%,
+    #454d55 100%
   );
   box-shadow:
-    inset 0 0 48px color-mix(in oklab, var(--holo) 7%, transparent),
-    0 0 32px color-mix(in oklab, var(--holo) 8%, transparent);
-  animation: var(--animate-holo-flicker);
+    0 0 26px color-mix(in oklab, var(--color-teal) 55%, transparent),
+    inset 0 0 12px color-mix(in oklab, var(--color-teal) 40%, transparent);
 }
-.holo .hud-corner {
-  border-color: var(--holo);
+.puck-top::before {
+  content: "";
+  position: absolute;
+  inset: 5px 12px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in oklab, var(--color-teal) 90%, white);
+  box-shadow: 0 0 8px var(--color-teal);
+}
+.puck-top::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  border-radius: 50%;
+  background: white;
+  box-shadow:
+    0 0 10px white,
+    0 0 20px var(--color-teal);
+  animation: var(--animate-pulse-soft);
 }
 
-/* ------------------------------------------------------------------ */
-/* Bounty puck: a disc on the "table" projecting the portrait upward   */
-/* ------------------------------------------------------------------ */
-.puck-stage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Light cone from the emitter up to the projection. */
+.holo-cone {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  z-index: 4;
+  width: 68%;
+  height: 78%;
+  margin-left: -34%;
+  pointer-events: none;
+  clip-path: polygon(0 0, 100% 0, 58% 100%, 42% 100%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-teal) 4%, transparent) 0%,
+    color-mix(in oklab, var(--color-teal) 12%, transparent) 55%,
+    color-mix(in oklab, var(--color-teal) 55%, transparent) 100%
+  );
+  filter: blur(1px);
 }
 
-/* The projection itself. Edges fade out so it reads as light, not a photo. */
-.puck-holo {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: radial-gradient(
-    ellipse 75% 60% at 50% 45%,
-    color-mix(in oklab, var(--color-teal) 30%, transparent),
-    transparent 80%
-  );
-  mask-image: radial-gradient(
-    ellipse 66% 60% at 50% 50%,
-    #000 38%,
-    transparent 96%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 66% 60% at 50% 50%,
-    #000 38%,
-    transparent 96%
-  );
+/* The projection. Any <img> or <svg> inside gets the hologram treatment. */
+.holo-bust {
+  position: absolute;
+  bottom: 112px;
+  left: 17%;
+  z-index: 5;
+  width: 66%;
+  height: 58%;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
   animation:
     holo-float 6s ease-in-out infinite,
     holo-flicker 5s steps(1, end) infinite;
 }
-/* Any image or SVG dropped inside gets the hologram treatment. */
-.puck-holo img,
-.puck-holo svg {
-  filter: grayscale(1) contrast(1.05) brightness(1.15);
-  opacity: 0.9;
-  mix-blend-mode: screen;
+.holo-bust img,
+.holo-bust svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: grayscale(1) contrast(1.15) brightness(1.1) sepia(1) saturate(4)
+    hue-rotate(160deg)
+    drop-shadow(0 0 14px color-mix(in oklab, var(--color-teal) 60%, transparent));
 }
 /* Horizontal projection lines. */
-.puck-holo::after {
+.holo-bust::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background-image: repeating-linear-gradient(
     to bottom,
-    color-mix(in oklab, var(--color-teal) 28%, transparent) 0 1px,
+    color-mix(in oklab, var(--color-teal) 30%, transparent) 0 1px,
     transparent 1px 3px
   );
   mix-blend-mode: screen;
 }
-
-/* Light cone from the puck's emitter up to the projection. */
-.puck-cone {
-  width: 100%;
-  height: 30px;
-  margin-top: -10px;
-  pointer-events: none;
-  clip-path: polygon(6% 0, 94% 0, 60% 100%, 40% 100%);
-  background: linear-gradient(
-    to bottom,
-    color-mix(in oklab, var(--color-teal) 10%, transparent),
-    color-mix(in oklab, var(--color-teal) 55%, transparent)
-  );
-  opacity: 0.8;
+/* Second copy, clipped to one band, that tears sideways now and then. */
+.holo-glitch {
+  z-index: 6;
+  clip-path: inset(38% 0 54% 0);
+  animation: holo-glitch 7s linear infinite;
+  opacity: 0;
+}
+.holo-glitch::after {
+  display: none;
 }
 
-/* The disc: brushed metal top, thin rim, teal emitter ring and lamp. */
-.puck {
-  position: relative;
-  width: 62%;
-  height: 18px;
-  margin-top: -2px;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at 50% 35%,
-    #4a545c 0%,
-    #2a3136 45%,
-    #14181b 100%
-  );
-  box-shadow:
-    0 3px 0 0 #1c2124,
-    0 5px 0 0 #3a434a,
-    0 14px 18px rgba(0, 0, 0, 0.65),
-    0 -2px 22px color-mix(in oklab, var(--color-teal) 35%, transparent);
+/* Red neon text (Latin). */
+.neon-red {
+  color: var(--color-neon);
+  text-shadow:
+    0 0 6px rgba(255, 77, 77, 0.9),
+    0 0 18px rgba(255, 40, 40, 0.6),
+    0 0 42px rgba(255, 0, 0, 0.35);
+  animation: neon-flicker 8s linear infinite;
 }
-.puck::before {
-  content: "";
-  position: absolute;
-  inset: 3px 7px;
-  border-radius: 50%;
-  border: 1px solid color-mix(in oklab, var(--color-teal) 75%, transparent);
-  box-shadow: inset 0 0 8px color-mix(in oklab, var(--color-teal) 45%, transparent);
+/* Red neon SVG strokes (the Aurebesh word). */
+.neon-svg {
+  color: var(--color-neon);
+  filter: drop-shadow(0 0 4px rgba(255, 77, 77, 0.95))
+    drop-shadow(0 0 14px rgba(255, 30, 30, 0.55));
+  animation: neon-flicker 8s linear infinite;
 }
-.puck::after {
-  content: "";
+
+.holo-wanted {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  width: 6px;
-  height: 6px;
-  margin: -3px;
-  border-radius: 50%;
-  background: var(--color-teal);
-  box-shadow: 0 0 10px var(--color-teal);
-  animation: var(--animate-pulse-soft);
+  z-index: 8;
+  width: 200px;
+  height: 44px;
+  margin-left: -100px;
+}
+.holo-bounty {
+  position: absolute;
+  bottom: 92px;
+  left: 0;
+  right: 0;
+  z-index: 7;
+  text-align: center;
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Terminal                                                            */
+/* ------------------------------------------------------------------ */
+.term-title {
+  @apply flex items-center justify-between gap-3 border-b border-line px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted;
+}
+.term-body {
+  position: relative;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+/* Sizing ghost: the finished session, invisible, so height never changes.
+   It also serves as the screen-reader copy. */
+.term-ghost {
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+}
+.term-live {
+  position: absolute;
+  inset: 1rem;
+  overflow: hidden;
+}
+.term-line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* Full-viewport CRT scanlines + soft vignette. Purely decorative. */
@@ -407,7 +569,7 @@ body {
   );
 }
 
-/* Blinking block cursor after the hero tagline. */
+/* Blinking block cursor. */
 .hud-cursor::after {
   content: "";
   display: inline-block;
@@ -543,19 +705,23 @@ body {
   }
   .hud-cursor::after,
   .visor-sweep,
-  .holo,
-  .puck-holo,
-  .puck::after {
+  .holo-bust,
+  .holo-glitch,
+  .neon-red,
+  .neon-svg,
+  .puck-top::after {
     animation: none;
   }
-  .visor-sweep {
+  .visor-sweep,
+  .holo-glitch {
     display: none;
   }
 }
 
 @media print {
   .scanlines,
-  .no-print {
+  .no-print,
+  .holo-stage {
     display: none !important;
   }
   .reveal-hidden {

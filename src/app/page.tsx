@@ -7,7 +7,8 @@ import { PostCard } from "@/components/PostCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
-import { Dossier } from "@/components/Dossier";
+import { HoloPuck } from "@/components/HoloPuck";
+import { Terminal } from "@/components/Terminal";
 
 export default function Home() {
   const featured = site.projects.filter((p) => p.featured).slice(0, 3);
@@ -46,7 +47,7 @@ export default function Home() {
             </span>
           </div>
 
-          <div className="grid items-center gap-12 md:grid-cols-[1fr_minmax(300px,400px)]">
+          <div className="grid items-start gap-12 lg:grid-cols-[1fr_minmax(340px,440px)]">
             <div>
               <p className="hud-label text-amber">
                 <span aria-hidden>{"// "}</span>
@@ -56,14 +57,19 @@ export default function Home() {
                 </span>
                 Ident confirmed
               </p>
-              <h1 className="mt-5 text-5xl font-semibold tracking-[-0.03em] sm:text-7xl">
+              <h1 className="mt-4 text-4xl font-semibold tracking-[-0.03em] sm:text-6xl">
                 {site.name}
               </h1>
-              <p className="hud-cursor mt-5 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-                {site.tagline}
-              </p>
 
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div className="mt-6">
+                <Terminal
+                  user={site.terminal.user}
+                  host={site.terminal.host}
+                  session={site.terminal.session}
+                />
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3">
                 <HudButton href="/projects" variant="primary">
                   View projects
                 </HudButton>
@@ -73,7 +79,7 @@ export default function Home() {
               </div>
             </div>
 
-            <Dossier />
+            <HoloPuck />
           </div>
         </div>
       </section>

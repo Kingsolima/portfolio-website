@@ -23,8 +23,10 @@ Everything you'd want to change lives in three places:
 
 | What | Where |
 |---|---|
-| Name, role, tagline, dossier card, about, hobbies, projects, experience, resume, socials | [`content/site.ts`](content/site.ts) |
-| Portrait projected from the puck (optional) | `public/portrait.jpg`, then set `dossier.portrait: "/portrait.jpg"` in `site.ts`. Head-and-shoulders on a plain background works best. |
+| Name, role, status, about, hobbies, projects, experience, resume, socials | [`content/site.ts`](content/site.ts) |
+| Hologram: your bounty amount and the "WANTED" word | `hologram` block in `site.ts` |
+| Hologram portrait (optional) | Cutout PNG with a **transparent background**, head and shoulders, front-lit, ~800px tall, saved as `public/portrait.png`. Then set `hologram.portrait: "/portrait.png"`. remove.bg or Photoshop will do the cutout. Until then an armored bust is projected. |
+| Terminal intro script (what gets typed on the home page) | `terminal.session` in `site.ts`: an ordered list of `{ cmd, output[] }`. Make it as long as you like; it types once per page load and click skips it. |
 | Blog posts | [`content/blog/*.mdx`](content/blog/) |
 | Resume PDF | `public/resume.pdf` (replace the placeholder file) |
 
