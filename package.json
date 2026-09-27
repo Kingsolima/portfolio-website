@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "resume": "cd resume && pdflatex -interaction=nonstopmode -halt-on-error resume.tex >/dev/null && pdflatex -interaction=nonstopmode -halt-on-error resume.tex >/dev/null && cp resume.pdf ../public/resume.pdf"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

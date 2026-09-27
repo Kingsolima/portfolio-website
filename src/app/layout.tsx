@@ -42,6 +42,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      /* globals.css sets `scroll-behavior: smooth` on html. This tells the
+         router the smooth scroll is deliberate, so it suspends it during
+         route transitions instead of fighting scroll restoration. */
+      data-scroll-behavior="smooth"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">

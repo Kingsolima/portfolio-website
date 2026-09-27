@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@content/site";
 import { getAllPosts } from "@/lib/blog";
+import { getFeaturedProjects } from "@/lib/projects";
 import { HudButton } from "@/components/HudButton";
 import { HudPanel } from "@/components/HudPanel";
 import { PostCard } from "@/components/PostCard";
@@ -11,7 +12,7 @@ import { HoloPuck3D } from "@/components/HoloPuck3D";
 import { Terminal } from "@/components/Terminal";
 
 export default function Home() {
-  const featured = site.projects.filter((p) => p.featured).slice(0, 3);
+  const featured = getFeaturedProjects().slice(0, 3);
   const posts = getAllPosts().slice(0, 2);
 
   return (
@@ -163,7 +164,7 @@ export default function Home() {
             />
             <div className="grid gap-4 md:grid-cols-3">
               {featured.map((p, i) => (
-                <ProjectCard key={p.title} project={p} index={i} />
+                <ProjectCard key={p.slug} project={p} index={i} />
               ))}
             </div>
           </section>

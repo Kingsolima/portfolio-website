@@ -1,0 +1,244 @@
+%-------------------------
+% Resume in Latex
+% Author : Omar Soliman
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%
+% CONVENTIONS (keep these consistent if you edit):
+%   - Every bullet ends in a period. Headings never do.
+%   - One \textbf{} per bullet, maximum. Bolding everything bolds nothing.
+%   - One idea per bullet, two lines maximum.
+%   - Months abbreviated with a period (Sept., Jan., Feb., Mar.); May, June,
+%     and July are never abbreviated. Ranges use -- (en dash), never ---.
+%   - Link text is the visible raw URL so it survives parsers that strip hrefs.
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\definecolor{linkblue}{HTML}{2563EB}
+\usepackage[colorlinks=true, urlcolor=linkblue, linkcolor=linkblue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}
+  {\scshape\raggedright\large}
+  {}
+  {0em}
+  {}
+  [\color{black}\titlerule]
+
+\titlespacing{\section}
+  {0pt}
+  {6pt}
+  {4pt}
+
+\pdfgentounicode=1
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\newcommand{\resumeItem}[1]{
+  \item \small{#1}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small #3} & \textit{\small #4} \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+  \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small #1} & \textit{\small #2} \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small #1 & \small\emph{#2} \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeSubItem}[1]{
+  \resumeItem{#1}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{
+  \begin{itemize}[
+    leftmargin=0.15in,
+    label={},
+    itemsep=4pt,
+    topsep=2pt,
+    parsep=0pt,
+    partopsep=0pt
+  ]
+}
+
+\newcommand{\resumeSubHeadingListEnd}{
+  \end{itemize}
+}
+
+\newcommand{\resumeItemListStart}{
+  \begin{itemize}[
+    itemsep=2pt,
+    topsep=2pt,
+    parsep=0pt,
+    partopsep=0pt
+  ]
+}
+
+\newcommand{\resumeItemListEnd}{
+  \end{itemize}
+}
+
+%-------------------------------------------
+\begin{document}
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Omar Soliman} \\ \vspace{1pt}
+    \small +1 (289) 242-9952 $|$
+    \href{mailto:osolima6@uwo.ca}{\underline{osolima6@uwo.ca}} $|$
+    \href{https://www.linkedin.com/in/omar-soliman-662939283/}{\underline{linkedin}} $|$
+    \href{https://github.com/KingSolima}{\underline{github.com/KingSolima}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Western University}{London, Ontario}
+      {B.S. in Computer Science, Dean's Honour List}{Expected May 2028}
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Gestalt Communications}{Oakville, Ontario}
+      {AI Engineer Intern}{July 2026 -- Present}
+      \resumeItemListStart
+        \resumeItem{Built a pipeline ingesting United Nations procurement notices and awards to
+        surface bidding opportunities relevant to Gestalt's services; backfilled \textbf{280k+ records}
+        on a rate limited PostgreSQL job queue.}
+        \resumeItem{Extended it with a document pipeline: attachment retrieval, PDF/DOCX extraction,
+        \textbf{Document AI OCR fallback} for scanned files, sentence aware chunking, and Vertex AI
+        embeddings stored in pgvector.}
+        \resumeItem{Persisted document text and chunks in \textbf{transactional checkpoints} before
+        embedding, allowing failed embedding stages to resume without repeating extraction or
+        chunking.}
+        \resumeItem{Provisioned \textbf{Terraform managed GCP} infrastructure spanning Cloud Run
+        Jobs, Cloud SQL, a versioned GCS archive, workload scoped IAM, Secret Manager, and
+        monitoring alerts.}
+        \resumeItem{Configured CI with \textbf{PostgreSQL integration tests} covering concurrent job
+        claims, expired lease recovery, and duplicate free record versioning, alongside lint and
+        type checks.}
+      \resumeItemListEnd
+
+    \vspace{3pt}
+    \resumeSubheading
+      {Swish Solar}{Waterloo, Ontario}
+      {Software Engineer Intern}{Sept. 2025 -- May 2026}
+      \resumeItemListStart
+        \resumeItem{\textbf{Sole engineer} on a Python pipeline converting solar SCADA and weather
+        exports into monthly performance and data health PDFs, built to replace manual reporting.}
+        \resumeItem{Built \textbf{Isolation Forest} anomaly detection on interval performance ratio,
+        power residual, and AC/DC efficiency features rather than raw power output, to reduce false
+        positives from normal sunrise and sunset dips.}
+        \resumeItem{Added rule based fault categories, severity, and recommended actions so
+        operators know what to act on; grouped consecutive \textbf{zero output daylight
+        intervals} into events for reporting.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+  \resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\href{https://github.com/Kingsolima/Agent-Firewall}{\textbf{Agent Firewall}}}
+      {Python, FastAPI, MCP, Claude API}
+      \resumeItemListStart
+        \resumeItem{Owned the \textbf{reasoning engine} of an MCP tool-call proxy that allows, flags
+        for human review, or blocks tool calls.}
+        \resumeItem{Combined regex, Claude semantic scoring, and source trust weighting; assessed
+        \textbf{tool call drift} against session intent captured before untrusted content arrived.}
+        \resumeItem{Ran intent extraction and injection detection concurrently with
+        \textbf{asyncio} under per stage timeouts; generated reviewer explanations only for
+        non allow decisions.}
+        \resumeItem{Evaluated 504 calls across 146 scenarios: \textbf{87\% scenario clustered
+        recall} at a 12\% false positive rate, versus 50\% recall at 13\% for a regex baseline.}
+      \resumeItemListEnd
+
+    \vspace{3pt}
+    \resumeProjectHeading
+      {\href{https://github.com/KingSolima/microbiome-disease-predictor}{\textbf{Microbiome IBD Classifier}}}
+      {Python, scikit-learn, XGBoost, FastAPI, React}
+      \resumeItemListStart
+        \resumeItem{Compared XGBoost and random forest models with \textbf{L1 logistic feature
+        selection} for Crohn's disease versus ulcerative colitis classification using 2,105 IBD
+        samples and 2,893 species level features.}
+        \resumeItem{Traced an inflated 0.91 ROC-AUC to study overlap across splits and test set
+        exposure during feature selection and tuning; rebuilt with \textbf{cohort grouped
+        cross validation} and fold specific L1 selection, reporting a corrected 0.64.}
+      \resumeItemListEnd
+
+    \vspace{3pt}
+    \resumeProjectHeading
+      {\textbf{SMS/MMS Campaign Tool}}
+      {Python, SQLite, Twilio}
+      \resumeItemListStart
+        \resumeItem{Built and operated a campaign CLI for a municipal mayoral campaign with
+        \textbf{delivery status reconciliation}, STOP/START opt-out handling, and SQLite backed
+        resumable sends keyed by campaign, contact, and channel.}
+        \resumeItem{Sent \textbf{5k+ MMS messages} in two waves for voter outreach and volunteer recruiting, driving 55 lawn sign opt-ins.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{\item{
+    \textbf{Languages}: Python, SQL, Java, C++, JavaScript, Bash \\
+    \textbf{Frameworks \& Libraries}: FastAPI, React, Pydantic, asyncio, Playwright, pandas, NumPy, seaborn \\
+    \textbf{AI \& Machine Learning}: Claude API, Vertex AI Embeddings, Google Document AI, scikit-learn \\
+    \textbf{Cloud \& Tools}: GCP, PostgreSQL, MySQL, pgvector, Supabase, Terraform, Docker, Git, GitHub Actions, Linux
+  }}
+\end{itemize}
+
+\end{document}

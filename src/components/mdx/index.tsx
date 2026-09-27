@@ -24,9 +24,25 @@ function Anchor({ href = "", children, ...rest }: ComponentPropsWithoutRef<"a">)
 }
 
 /**
+ * The project write-ups lean on wide result tables. Squeezing five columns
+ * into a phone makes them unreadable, so the table keeps a floor width and
+ * scrolls sideways inside its own box instead of stretching the page.
+ */
+function Table({ children, ...rest }: ComponentPropsWithoutRef<"table">) {
+  return (
+    <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+      <table {...rest} className="min-w-[34rem]">
+        {children}
+      </table>
+    </div>
+  );
+}
+
+/**
  * Overrides applied to every MDX post. Typography itself is handled by the
  * `.prose-hud` styles in globals.css; these only change behaviour.
  */
 export const mdxComponents: Components = {
   a: Anchor,
+  table: Table,
 };

@@ -1,0 +1,94 @@
+---
+title: SMS/MMS Campaign Tool
+summary: A command-line tool for running text-message outreach waves for a municipal mayoral campaign, with resumable sends, carrier-verified delivery tracking, and opt-out handling.
+role: "Built and operated the tool end to end [TODO: confirm sole engineer]"
+team: "[TODO]"
+dates: "[TODO: e.g. Aug 2026]"
+status: complete
+featured: false
+order: 3
+tags: [Backend, Ops]
+stack: [Python, SQLite, Twilio, SendGrid]
+client: Municipal mayoral campaign, a client of Gestalt Communications
+confidential: true
+# Visible in the build. Gestalt still needs to sign off on a public write-up
+# before this site is deployed anywhere; flip back to true to pull it.
+draft: false
+links: {}
+metric:
+  value: "4,180"
+  label: "MMS sent across two waves, 55 lawn sign opt-ins attributed"
+---
+
+{/*
+CLIENT WORK. Before publishing:
+- Confirm with Gestalt that a conceptual write-up is fine. No code, no repo, no client name.
+- Keep the campaign unnamed. "A municipal mayoral campaign in Ontario" is already on the resume; stop there.
+- Every number below comes from your own notes. Re-check them against the SQLite records before they go live.
+- NOTE: this page says 4,180 MMS. The resume and site.ts both say "5k+". Reconcile the two before either goes out.
+*/}
+
+**A Python CLI that ran the text-message side of a municipal mayoral campaign's voter outreach.** Built as a client project during my internship at Gestalt Communications, and operated by me through both send waves. No repository is public, because it was built for a client; this page describes the design.
+
+## At a glance
+
+- **4,180 MMS messages** sent across two waves for voter outreach and volunteer recruitment
+- **55 additional lawn sign opt-ins** attributed to the texts
+- **90% confirmed delivered** in the first wave, counted from carrier delivery status rather than provider acceptance [TODO: wave 2 figure, and confirm 90% against the records]
+- **Zero double-sends** across two waves and any number of restarts, by design rather than by care [TODO: confirm no duplicates were recorded]
+
+## Problem
+
+A campaign has a contact list, a short window, and volunteers rather than engineers. It needs to send a few thousand picture messages, know who actually received them, stop texting anyone who asks, and do it again a week or two later without re-texting people who already answered or opted out. Off-the-shelf tools were [TODO: too expensive / not available in Canada for this use / not flexible enough for MMS with images]. Sending from a script is easy. Sending from a script that can be killed halfway through and restarted safely, and that can tell "Twilio accepted it" from "the phone received it," is the actual job.
+
+## Approach
+
+```text
+contact list + campaign copy
+            │
+            ▼
+      ┌───────────┐        ┌──────────────┐
+      │ Python CLI│───────▶│ Twilio MMS   │
+      └───────────┘        └──────┬───────┘
+            │                     │ delivery status
+            │                     ▼
+            │         ┌─────────────────────────┐
+            ├────────▶│ SQLite send records     │◀──── inbound STOP / START
+            │         │ key: campaign, contact, │
+            │         │      channel            │
+            │         └───────────┬─────────────┘
+            │                     │
+            ▼                     ▼
+      SendGrid email          wave report
+```
+
+**Decision 1: one row per (campaign, contact, channel), and that row is the source of truth.** Every send is recorded in SQLite before it goes out, keyed on the campaign, the contact, and the channel (MMS or email). Re-running the CLI reads the table and skips anything already sent, so a crash, a rate-limit stall, or a laptop going to sleep mid-wave costs nothing but a restart. The same key is what let wave 2 run against the same list without re-texting anyone wave 1 had already reached.
+
+**Decision 2: reconcile delivery from the carrier, not from the API response.** Twilio accepting a message means it was queued, not that it arrived; numbers that are landlines, disconnected, or filtered by the carrier still return a successful API call. The tool records the final delivery status per message and updates the send record, so "attempted" and "delivered" are separate columns and the 90% figure is a delivery number, not a request count. [TODO: status callbacks to a webhook, or polling the message resource after the wave? Say which.]
+
+**Decision 3: opt-outs live in the same table.** STOP and START replies update a suppression flag on the contact, and the send loop checks it before every message. Wave 2 therefore honoured every wave 1 opt-out automatically, and anyone who texted START was re-enabled without manual list editing. Keeping the suppression state next to the send records also meant the wave report could show opt-out counts alongside delivery counts, from one query.
+
+**Operating it.** [TODO: two or three sentences on what running a wave looked like: how the list was prepared, how long a wave took, throughput limits you hit, what you watched while it ran.]
+
+**What broke.** [TODO: the honest paragraph. Candidates worth remembering: carrier filtering on the first messages, MMS image size or format rejections, throughput ceilings on the sending number, contacts with malformed numbers, anything you fixed between wave 1 and wave 2.]
+
+## Results
+
+| | Wave 1 | Wave 2 | Total |
+|---|---|---|---|
+| MMS sent | [TODO] | [TODO] | 4,180 |
+| Confirmed delivered | 90% | [TODO] | [TODO] |
+| Opt-outs | [TODO] | [TODO] | [TODO] |
+| Lawn sign opt-ins attributed | | | 55 |
+
+**What the numbers do not say.** Attribution is by reply and follow-up, not a controlled experiment; some of the 55 would have asked for a sign anyway. Delivery status is the carrier's word, and "delivered" means the handset acknowledged receipt, not that anyone read it. [TODO: the email channel: was it used in production, and if so, how many sends?]
+
+## What I'd do next
+
+- **Move status handling to webhooks** if it was polling, so the records update in real time and a wave report is accurate the moment the wave ends. [TODO: drop if already webhook-based]
+- **Per-wave message variants.** Two waves is enough to A/B copy or imagery on a random split and measure opt-in rate by variant instead of guessing what worked.
+- **Postgres instead of SQLite** the moment more than one operator needs to run sends at once. For one operator and one laptop, SQLite was the right call.
+
+## Stack
+
+Python · SQLite · Twilio Programmable Messaging (MMS) · SendGrid (email channel) [TODO: confirm]

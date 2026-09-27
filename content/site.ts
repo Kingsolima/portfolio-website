@@ -3,22 +3,12 @@
  * trim or extend the arrays, and the site updates everywhere.
  *
  * Blog posts live separately as MDX files in `content/blog/`.
- * The resume PDF lives at `public/resume.pdf`.
+ * Projects live separately as MDX files in `content/projects/`; their
+ * frontmatter feeds the index cards and the page headers.
+ * The resume PDF is built from `resume/resume.tex` by `npm run resume`
+ * and lands at `public/resume.pdf`.
  * The hologram portrait (optional) lives at `public/portrait.png`.
  */
-
-export type Project = {
-  /** Short, punchy. */
-  title: string;
-  /** One or two sentences: what it is and why it matters. */
-  summary: string;
-  /** Tech / topic tags, 2 to 5 is a good range. */
-  tags: string[];
-  repo?: string;
-  live?: string;
-  /** Featured projects show on the home page (first 3). */
-  featured?: boolean;
-};
 
 export type Experience = {
   company: string;
@@ -103,13 +93,13 @@ export const site = {
   name: "Omar Soliman",
   /** Short mono identifier shown in the nav. */
   handle: "OMAR.SOLIMAN",
-  role: "[PLACEHOLDER: Software Engineer]",
+  role: "AI & Software Engineer",
   /** Nav status pill. */
-  status: "Seeking 2027 internships",
-  location: "[PLACEHOLDER: City, Country]",
+  status: "Seeking Summer 2027 internships",
+  location: "London, Ontario",
   /** <meta description>. Keep under ~160 characters. */
   description:
-    "Portfolio of Omar Soliman. [PLACEHOLDER: one-line description of who you are and what you do].",
+    "Portfolio of Omar Soliman, a computer science student at Western University who builds AI and data pipelines that survive real data.",
 
   hologram: {
     /** Replace with your own cutout, e.g. "/portrait.png", then set portraitIsPlaceholder: false. */
@@ -118,7 +108,7 @@ export const site = {
     portraitCredit:
       "Placeholder: Plato bust. Photo Marie-Lan Nguyen (CC BY 2.5), cutout S. Perquin (CC0), Wikimedia Commons",
     wanted: "WANTED",
-    bounty: { amount: "20,000", unit: "credits" }, // PLACEHOLDER: pick your number
+    bounty: { amount: "20,000", unit: "credits" },
   } satisfies Hologram,
 
   terminal: {
@@ -129,29 +119,29 @@ export const site = {
         cmd: "whoami",
         output: [
           "Omar Soliman",
-          "[PLACEHOLDER: B.Sc. Computer Science, University, Class of 2028]",
-          "Sector: [PLACEHOLDER: City, Country]",
+          "B.Sc. Computer Science, Western University, Class of 2028",
+          "Sector: London, Ontario",
         ],
       },
       {
         cmd: "cat status.txt",
         output: [
           "STATUS: Seeking Summer 2027 software engineering internships",
-          "Open to: [PLACEHOLDER: on-site, hybrid, remote]",
-          "Available: [PLACEHOLDER: May 2027]",
+          "Open to: on-site, hybrid, remote",
+          "Available: May 2027",
         ],
       },
       {
         cmd: "cat about.txt",
         output: [
-          "[PLACEHOLDER: What you build and why, one line.]",
-          "[PLACEHOLDER: How you work, one line.]",
-          "[PLACEHOLDER: The Mandalorian bit, one line.]",
+          "I build data and AI pipelines that keep running unattended.",
+          "I care more about a number being right than about it being high.",
+          "This is the Way. It is also roughly my code review policy.",
         ],
       },
       {
         cmd: "ls skills/",
-        output: ["typescript/  react/  python/  [placeholder]/"],
+        output: ["python/  sql/  fastapi/  postgres/  gcp/  terraform/"],
       },
       {
         cmd: "./contact.sh",
@@ -161,9 +151,9 @@ export const site = {
   } satisfies Terminal,
 
   about: [
-    "[PLACEHOLDER: Paragraph 1, what drives you. What kind of problems pull you in, what you love about building things.]",
-    "[PLACEHOLDER: Paragraph 2, how you work. Your values, how you learn, what you're chasing next.]",
-    "[PLACEHOLDER: Paragraph 3, the Mandalorian bit. Why the show, the creed, the craft of it resonates with you. Keep it to one paragraph: charming, not cosplay.]",
+    "I like the unglamorous half of AI work: the ingestion, the queues, the retries. Most of what I build ends in a model call, but the part that decides whether it works is everything before it: backfilling 280k procurement records through a rate limited job queue, checkpointing extracted document text so a failed embedding run resumes instead of starting over, grouping raw solar telemetry into events an operator can actually act on. If it cannot survive being run unattended at 3am, it is a demo, not a system.",
+    "The work I am proudest of is a number I made worse. A classifier of mine hit 0.91 ROC-AUC, which felt great until I traced it to study overlap across splits and test set exposure during feature selection. Rebuilt with cohort grouped cross validation and fold specific selection, it reported 0.64. That is the honest number, and finding it taught me more than the first one would have. I would rather ship something defensible than something impressive.",
+    "The Mandalorian thing is about craft, not cosplay. A covert of people who are very good at one narrow trade, who maintain their own gear, who take a creed seriously enough to be inconvenienced by it. Beskar gets reforged, never thrown out. That is a fair description of how I feel about a codebase you intend to keep.",
   ],
 
   hobbies: [
@@ -186,65 +176,34 @@ export const site = {
     },
   ] satisfies Hobby[],
 
-  projects: [
-    {
-      title: "[PLACEHOLDER: Project One]",
-      summary:
-        "[PLACEHOLDER: What it does, who it's for, and the one hard problem you solved.]",
-      tags: ["TypeScript", "Next.js", "PostgreSQL"],
-      repo: "https://github.com/[PLACEHOLDER]/project-one",
-      live: "https://example.com",
-      featured: true,
-    },
-    {
-      title: "[PLACEHOLDER: Project Two]",
-      summary:
-        "[PLACEHOLDER: What it does, who it's for, and the one hard problem you solved.]",
-      tags: ["Python", "FastAPI"],
-      repo: "https://github.com/[PLACEHOLDER]/project-two",
-      featured: true,
-    },
-    {
-      title: "[PLACEHOLDER: Project Three]",
-      summary:
-        "[PLACEHOLDER: What it does, who it's for, and the one hard problem you solved.]",
-      tags: ["Go", "gRPC"],
-      repo: "https://github.com/[PLACEHOLDER]/project-three",
-      featured: true,
-    },
-    {
-      title: "[PLACEHOLDER: Project Four]",
-      summary: "[PLACEHOLDER: Smaller project or experiment.]",
-      tags: ["Rust"],
-      repo: "https://github.com/[PLACEHOLDER]/project-four",
-    },
-  ] satisfies Project[],
-
   experience: [
     {
-      company: "[PLACEHOLDER: Company]",
-      role: "[PLACEHOLDER: Role]",
-      start: "[PLACEHOLDER: Mon YYYY]",
+      company: "Gestalt Communications",
+      role: "AI Engineer Intern",
+      start: "Jul 2026",
       end: null,
-      location: "[PLACEHOLDER: City / Remote]",
+      location: "Oakville, Ontario",
       bullets: [
-        "[PLACEHOLDER: Impact statement with a number in it.]",
-        "[PLACEHOLDER: Something you owned end to end.]",
-        "[PLACEHOLDER: Something you improved for the team.]",
+        "Built a pipeline ingesting United Nations procurement notices and awards to surface bidding opportunities relevant to Gestalt's services, backfilling 280k+ records on a rate limited PostgreSQL job queue.",
+        "Extended it with a document pipeline: attachment retrieval, PDF/DOCX extraction, Document AI OCR fallback for scanned files, sentence aware chunking, and Vertex AI embeddings stored in pgvector.",
+        "Persisted document text and chunks in transactional checkpoints before embedding, so failed embedding stages resume without repeating extraction or chunking.",
+        "Provisioned Terraform managed GCP infrastructure spanning Cloud Run Jobs, Cloud SQL, a versioned GCS archive, workload scoped IAM, Secret Manager and monitoring alerts.",
+        "Configured CI with PostgreSQL integration tests covering concurrent job claims, expired lease recovery and duplicate free record versioning, alongside lint and type checks.",
       ],
-      tags: ["TypeScript", "React", "AWS"],
+      tags: ["Python", "PostgreSQL", "pgvector", "GCP", "Terraform"],
     },
     {
-      company: "[PLACEHOLDER: Previous Company]",
-      role: "[PLACEHOLDER: Role]",
-      start: "[PLACEHOLDER: Mon YYYY]",
-      end: "[PLACEHOLDER: Mon YYYY]",
-      location: "[PLACEHOLDER: City]",
+      company: "Swish Solar",
+      role: "Software Engineer Intern",
+      start: "Sep 2025",
+      end: "May 2026",
+      location: "Waterloo, Ontario",
       bullets: [
-        "[PLACEHOLDER: Impact statement with a number in it.]",
-        "[PLACEHOLDER: Something you shipped.]",
+        "Sole engineer on a Python pipeline converting solar SCADA and weather exports into monthly performance and data health PDFs, built to replace manual reporting.",
+        "Built Isolation Forest anomaly detection on interval performance ratio, power residual and AC/DC efficiency features rather than raw power output, to cut false positives from normal sunrise and sunset dips.",
+        "Added rule based fault categories, severity and recommended actions so operators know what to act on, and grouped consecutive zero output daylight intervals into events for reporting.",
       ],
-      tags: ["Python", "Docker"],
+      tags: ["Python", "pandas", "scikit-learn"],
     },
   ] satisfies Experience[],
 
@@ -252,58 +211,80 @@ export const site = {
     /** Path under /public. Replace the placeholder PDF with your real one. */
     pdf: "/resume.pdf",
     summary:
-      "[PLACEHOLDER: 2 to 3 sentence professional summary. Who you are, what you're strongest at, what you're looking for.]",
+      "Computer science student at Western University, currently an AI engineer intern at Gestalt Communications. I am strongest on the plumbing behind AI systems: ingestion and job queues that survive rate limits and restarts, document and embedding pipelines, and the Terraform and CI around them. Looking for a Summer 2027 software engineering internship where correctness matters more than demo speed.",
     skills: [
       {
         group: "Languages",
-        items: ["TypeScript", "Python", "Go", "[PLACEHOLDER]"],
+        items: ["Python", "SQL", "Java", "C++", "JavaScript", "Bash"],
       },
       {
         group: "Frameworks",
-        items: ["React", "Next.js", "Node.js", "[PLACEHOLDER]"],
+        items: [
+          "FastAPI",
+          "React",
+          "Pydantic",
+          "asyncio",
+          "Playwright",
+          "pandas",
+          "NumPy",
+          "seaborn",
+        ],
       },
       {
-        group: "Infra & Tools",
-        items: ["Docker", "AWS", "PostgreSQL", "Git", "[PLACEHOLDER]"],
+        group: "AI & ML",
+        items: [
+          "Claude API",
+          "Vertex AI Embeddings",
+          "Google Document AI",
+          "scikit-learn",
+          "XGBoost",
+        ],
+      },
+      {
+        group: "Cloud & Tools",
+        items: [
+          "GCP",
+          "PostgreSQL",
+          "MySQL",
+          "pgvector",
+          "Supabase",
+          "Terraform",
+          "Docker",
+          "Git",
+          "GitHub Actions",
+          "Linux",
+        ],
       },
     ] satisfies SkillGroup[],
     education: [
       {
-        school: "[PLACEHOLDER: University]",
-        degree: "[PLACEHOLDER: B.Sc. Computer Science]",
-        years: "[PLACEHOLDER: YYYY to YYYY]",
-        notes: "[PLACEHOLDER: Honours, thesis, or leave blank]",
+        school: "Western University, London, Ontario",
+        degree: "B.Sc. Computer Science",
+        years: "2024 to 2028 (expected)",
+        notes: "Dean's Honour List.",
       },
     ] satisfies Education[],
-    certifications: [
-      "[PLACEHOLDER: Certification or award]",
-    ] as string[],
+    certifications: [] as string[],
   },
 
   socials: [
     {
       kind: "github",
       label: "GitHub",
-      handle: "@[PLACEHOLDER]",
-      url: "https://github.com/[PLACEHOLDER]",
+      handle: "@KingSolima",
+      url: "https://github.com/KingSolima",
     },
     {
       kind: "linkedin",
       label: "LinkedIn",
-      handle: "/in/[PLACEHOLDER]",
-      url: "https://www.linkedin.com/in/[PLACEHOLDER]",
-    },
-    {
-      kind: "x",
-      label: "X",
-      handle: "@[PLACEHOLDER]",
-      url: "https://x.com/[PLACEHOLDER]",
+      handle: "/in/omar-soliman-662939283",
+      url: "https://www.linkedin.com/in/omar-soliman-662939283/",
     },
     {
       kind: "email",
       label: "Email",
-      handle: "[PLACEHOLDER]@example.com",
-      url: "mailto:[PLACEHOLDER]@example.com",
+      handle: "osolima6@uwo.ca",
+      url: "mailto:osolima6@uwo.ca",
     },
   ] satisfies Social[],
 } as const;
