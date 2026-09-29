@@ -53,14 +53,12 @@ The filename is the URL (`/blog/my-post/`). Add `draft: true` to hide a post wit
 
 The build produces plain HTML/CSS/JS in `out/`. No server, no adapters.
 
-**Netlify**: connect the repo; `netlify.toml` already sets the build command, publish dir, and Node 22.
+**AWS Amplify Hosting** (the live setup): `amplify.yml` sets Node 22, the build command, and `out/` as the output.
+1. Amplify console → Create new app → GitHub → this repo, branch `main`. Amplify picks up `amplify.yml`; every push to `main` redeploys.
+2. Hosting → Rewrites and redirects → add source `/<*>`, target `/404.html`, type `404 (Rewrite)`, so unknown URLs get the site's own 404 page.
+3. Hosting → Custom domains → add your domain. A Route 53 domain is one click; another registrar needs the CNAME records Amplify shows.
 
-**Cloudflare Pages**: connect the repo and set:
-- Build command: `npm run build`
-- Build output directory: `out`
-- Environment variable: `NODE_VERSION` = `22`
-
-**Anything else** (GitHub Pages, S3, nginx): upload `out/`. Routes use trailing slashes (`/blog/slug/index.html`) so any static host resolves them.
+**Anything else** (S3 + CloudFront, GitHub Pages, nginx): upload `out/`. Routes use trailing slashes (`/blog/slug/index.html`) so any static host resolves them.
 
 Before going live, set `url` in `content/site.ts` to your real domain; it drives canonical and Open Graph URLs.
 

@@ -1,0 +1,21 @@
+# AWS Amplify Hosting build settings. Amplify reads this file automatically
+# when the repo is connected. The site is a static export, so Amplify only
+# serves the files in out/.
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm install 22
+        - nvm use 22
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: out
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/*
