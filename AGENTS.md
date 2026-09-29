@@ -1,3 +1,5 @@
+DO NOT HAVE YOURSELF AS CO AUTHOR ON ALL PUSHES.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
