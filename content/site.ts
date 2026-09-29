@@ -102,11 +102,9 @@ export const site = {
     "Portfolio of Omar Soliman, a computer science student at Western University who builds AI and data pipelines that survive real data.",
 
   hologram: {
-    /** Replace with your own cutout, e.g. "/portrait.png", then set portraitIsPlaceholder: false. */
-    portrait: "/placeholder-bust.png" as string | null,
-    portraitIsPlaceholder: true,
-    portraitCredit:
-      "Placeholder: Plato bust. Photo Marie-Lan Nguyen (CC BY 2.5), cutout S. Perquin (CC0), Wikimedia Commons",
+    /** Transparent cutout; swap the file to change the hologram. */
+    portrait: "/portrait.png" as string | null,
+    portraitIsPlaceholder: false,
     wanted: "WANTED",
     bounty: { amount: "20,000", unit: "credits" },
   } satisfies Hologram,

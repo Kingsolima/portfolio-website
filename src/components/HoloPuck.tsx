@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { site } from "@content/site";
+import { site, type Hologram } from "@content/site";
 import { AurebeshWanted } from "./AurebeshWanted";
 
 /**
@@ -9,7 +9,7 @@ import { AurebeshWanted } from "./AurebeshWanted";
  * its own) and renders just the visual.
  */
 export function HoloPuck({ bare = false }: { bare?: boolean }) {
-  const h = site.hologram;
+  const h: Hologram = site.hologram;
   const label = `Bounty puck projecting a hologram of ${site.name}. ${h.wanted}. Bounty: ${h.bounty.amount} ${h.bounty.unit}.`;
 
   const bust = h.portrait ? (

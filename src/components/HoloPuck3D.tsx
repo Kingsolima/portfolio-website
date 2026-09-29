@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { site } from "@content/site";
+import { site, type Hologram } from "@content/site";
 import { HoloPuck } from "./HoloPuck";
 import { AurebeshWanted } from "./AurebeshWanted";
 import type { Phase } from "./holo/sequence";
@@ -37,7 +37,7 @@ function detectLowTier(): boolean {
  * loads), then fades in the three.js scene. Text stays as HTML overlays.
  */
 export function HoloPuck3D() {
-  const h = site.hologram;
+  const h: Hologram = site.hologram;
   const [support, setSupport] = useState<Support>("unknown");
   const [motion, setMotion] = useState(true);
   const [lowTier, setLowTier] = useState(false);

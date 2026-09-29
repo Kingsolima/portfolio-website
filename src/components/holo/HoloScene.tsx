@@ -30,7 +30,8 @@ export type HoloSceneProps = {
 };
 
 const EMITTER_Y = 0.262;
-const BUST_BOTTOM = 0.95;
+/** High enough that the bounty readout sits over the beam, below the chin. */
+const BUST_BOTTOM = 1.35;
 const BUST_WIDTH = 1.75;
 const BEAM_HEIGHT = 3.1;
 

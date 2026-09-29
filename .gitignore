@@ -47,3 +47,8 @@ resume/*.out
 resume/*.fls
 resume/*.fdb_latexmk
 resume/*.synctex.gz
+
+# original photos (the cutout in public/portrait.png is what ships)
+/IMG_*.jpeg
+/IMG_*.jpg
+/IMG_*.HEIC

@@ -25,7 +25,7 @@ Everything you'd want to change lives in three places:
 |---|---|
 | Name, role, status, about, hobbies, projects, experience, resume, socials | [`content/site.ts`](content/site.ts) |
 | Hologram: your bounty amount and the "WANTED" word | `hologram` block in `site.ts` |
-| Hologram portrait | Cutout PNG with a **transparent background**, head and shoulders, front-lit, ~800px tall. Save it as `public/portrait.png`, set `hologram.portrait: "/portrait.png"` and `hologram.portraitIsPlaceholder: false` in `site.ts`. remove.bg or Photoshop will do the cutout. Until then a marble bust of Plato from Wikimedia Commons is projected (photo Marie-Lan Nguyen, CC BY 2.5; cutout S. Perquin, CC0) and a small credit line shows under the puck. Delete `public/placeholder-bust.png` once your photo is in. |
+| Hologram portrait | Cutout PNG with a **transparent background**, head and shoulders, front-lit, ~800px tall. Replace `public/portrait.png` (referenced by `hologram.portrait` in `site.ts`). remove.bg or Photoshop will do the cutout. Dark pixels project dim and bright pixels glow, so crop above any bright shirt print and clean light background out of the hair edges. |
 | Terminal intro script (what gets typed on the home page) | `terminal.session` in `site.ts`: an ordered list of `{ cmd, output[] }`. Make it as long as you like; it types once per page load and click skips it. |
 | Blog posts | [`content/blog/*.mdx`](content/blog/) |
 | Resume PDF | `public/resume.pdf` (replace the placeholder file) |
