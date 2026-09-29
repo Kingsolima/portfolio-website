@@ -156,21 +156,23 @@ export const site = {
 
   hobbies: [
     {
-      name: "[PLACEHOLDER: Hobby one]",
-      blurb: "[PLACEHOLDER: One line about it.]",
-    },
-    {
-      name: "[PLACEHOLDER: Hobby two]",
-      blurb: "[PLACEHOLDER: One line about it.]",
-    },
-    {
-      name: "[PLACEHOLDER: Hobby three]",
-      blurb: "[PLACEHOLDER: One line about it.]",
-    },
-    {
-      name: "Star Wars",
+      name: "Soccer & basketball",
       blurb:
-        "[PLACEHOLDER: Favourite era, favourite ship, hot take. Whatever you'd argue about at 2am.]",
+        "Pickup games of whichever one I can find. The best way I know to get away from the keyboard.",
+    },
+    {
+      name: "Archery",
+      blurb:
+        "Slow, precise, and completely unforgiving of a rushed release. The closest thing I have to meditation.",
+    },
+    {
+      name: "Reading",
+      blurb: "Books, mostly on paper. A good one will cost me a night of sleep.",
+    },
+    {
+      name: "Building & learning AI/ML",
+      blurb:
+        "Side projects for the fun of it, plus a steady habit of reading papers and trying new models to see what actually holds up.",
     },
   ] satisfies Hobby[],
 
