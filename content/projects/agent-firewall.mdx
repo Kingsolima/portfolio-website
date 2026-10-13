@@ -1,6 +1,6 @@
 ---
 title: Agent Firewall
-summary: An MCP tool-call proxy that allows, holds for human review, or blocks each tool call by checking it against what the user originally asked for.
+summary: A security layer for AI agents. It checks every action an agent tries to take against what the user actually asked for, then allows it, holds it for a human, or blocks it.
 role: Owned the reasoning engine
 team: "3 people"
 dates: "[TODO: e.g. March 2026, built in N days at EVENT]"
@@ -11,7 +11,7 @@ tags: [ML, Backend, Security]
 stack: [Python, FastAPI, MCP, Claude API, asyncio, Pydantic, Supabase]
 metric:
   value: "87%"
-  label: "recall at a 12% false-positive rate, vs. 50% for a signature baseline"
+  label: "of attacks caught at a 12% false-alarm rate, vs. 50% for a pattern-matching baseline"
 links:
   repo: https://github.com/KingSolima/Agent-Firewall
   demo: https://agent-firewall-orcin.vercel.app/

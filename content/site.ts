@@ -184,11 +184,10 @@ export const site = {
       end: null,
       location: "Oakville, Ontario",
       bullets: [
-        "Built a pipeline ingesting United Nations procurement notices and awards to surface bidding opportunities relevant to Gestalt's services, backfilling 280k+ records on a rate limited PostgreSQL job queue.",
-        "Extended it with a document pipeline: attachment retrieval, PDF/DOCX extraction, Document AI OCR fallback for scanned files, sentence aware chunking, and Vertex AI embeddings stored in pgvector.",
-        "Persisted document text and chunks in transactional checkpoints before embedding, so failed embedding stages resume without repeating extraction or chunking.",
-        "Provisioned Terraform managed GCP infrastructure spanning Cloud Run Jobs, Cloud SQL, a versioned GCS archive, workload scoped IAM, Secret Manager and monitoring alerts.",
-        "Configured CI with PostgreSQL integration tests covering concurrent job claims, expired lease recovery and duplicate free record versioning, alongside lint and type checks.",
+        "Built a pipeline that collects United Nations procurement notices and contract awards and flags the bidding opportunities that fit Gestalt's services, backfilling 280k+ records through a rate limited PostgreSQL job queue.",
+        "Added document search: it pulls text from tender PDFs and Word files (with OCR for scanned pages), splits it into chunks, and stores Vertex AI embeddings in pgvector so documents can be searched by meaning.",
+        "Made it safe to fail: workers claim jobs on leases, so a crashed worker's job gets picked up again, and checkpoints let a failed run resume where it stopped instead of starting over.",
+        "Deployed it on GCP with Terraform (Cloud Run Jobs, Cloud SQL, Cloud Storage, Secret Manager, alerts), with CI running PostgreSQL integration tests, lint and type checks.",
       ],
       tags: ["Python", "PostgreSQL", "pgvector", "GCP", "Terraform"],
     },
@@ -199,9 +198,9 @@ export const site = {
       end: "May 2026",
       location: "Waterloo, Ontario",
       bullets: [
-        "Sole engineer on a Python pipeline converting solar SCADA and weather exports into monthly performance and data health PDFs, built to replace manual reporting.",
-        "Built Isolation Forest anomaly detection on interval performance ratio, power residual and AC/DC efficiency features rather than raw power output, to cut false positives from normal sunrise and sunset dips.",
-        "Added rule based fault categories, severity and recommended actions so operators know what to act on, and grouped consecutive zero output daylight intervals into events for reporting.",
+        "Sole engineer on a Python tool that turns raw solar farm sensor and weather data into monthly performance and data quality PDF reports, replacing manual reporting.",
+        "Detected underperforming equipment with Isolation Forest, using efficiency based features instead of raw power, so normal sunrise and sunset dips stopped setting off false alarms.",
+        "Labelled each fault by type and severity with a recommended fix, and grouped daylight stretches of zero output into single outage events, so operators see what to act on first.",
       ],
       tags: ["Python", "pandas", "scikit-learn"],
     },
@@ -211,7 +210,7 @@ export const site = {
     /** Path under /public. Replace the placeholder PDF with your real one. */
     pdf: "/resume.pdf",
     summary:
-      "Computer science student at Western University, currently an AI engineer intern at Gestalt Communications. I am strongest on the plumbing behind AI systems: ingestion and job queues that survive rate limits and restarts, document and embedding pipelines, and the Terraform and CI around them. Looking for a Summer 2027 software engineering internship where correctness matters more than demo speed.",
+      "Computer science student at Western University and AI engineer intern at Gestalt Communications. I build the systems behind AI features: pipelines that pull in and process data, job queues that recover when things fail, and the cloud setup and tests that keep it all running. Looking for a Summer 2027 software engineering internship.",
     skills: [
       {
         group: "Languages",

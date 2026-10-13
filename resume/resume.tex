@@ -151,20 +151,17 @@
       {Gestalt Communications}{Oakville, Ontario}
       {AI Engineer Intern}{July 2026 -- Present}
       \resumeItemListStart
-        \resumeItem{Built a pipeline ingesting United Nations procurement notices and awards to
-        surface bidding opportunities relevant to Gestalt's services; backfilled \textbf{280k+ records}
-        on a rate limited PostgreSQL job queue.}
-        \resumeItem{Extended it with a document pipeline: attachment retrieval, PDF/DOCX extraction,
-        \textbf{Document AI OCR fallback} for scanned files, sentence aware chunking, and Vertex AI
-        embeddings stored in pgvector.}
-        \resumeItem{Persisted document text and chunks in \textbf{transactional checkpoints} before
-        embedding, allowing failed embedding stages to resume without repeating extraction or
-        chunking.}
-        \resumeItem{Provisioned \textbf{Terraform managed GCP} infrastructure spanning Cloud Run
-        Jobs, Cloud SQL, a versioned GCS archive, workload scoped IAM, Secret Manager, and
-        monitoring alerts.}
-        \resumeItem{Configured CI with \textbf{PostgreSQL integration tests} covering concurrent job
-        claims, expired lease recovery, and duplicate free record versioning, alongside lint and
+        \resumeItem{Built a pipeline that collects United Nations procurement notices and contract
+        awards and flags the bidding opportunities that fit Gestalt's services; backfilled
+        \textbf{280k+ records} through a rate limited PostgreSQL job queue.}
+        \resumeItem{Added document search: extracts text from tender PDFs and Word files (with
+        \textbf{OCR} for scanned pages), chunks it, and stores \textbf{Vertex AI embeddings in
+        pgvector} so documents can be searched by meaning.}
+        \resumeItem{Made it safe to fail: workers claim jobs on \textbf{leases} so a crashed
+        worker's job is picked up again, and \textbf{checkpoints} let failed runs resume where they
+        stopped.}
+        \resumeItem{Deployed on GCP with \textbf{Terraform} (Cloud Run Jobs, Cloud SQL, Cloud
+        Storage, Secret Manager, alerts), with CI running PostgreSQL integration tests, lint, and
         type checks.}
       \resumeItemListEnd
 
@@ -173,14 +170,15 @@
       {Swish Solar}{Waterloo, Ontario}
       {Software Engineer Intern}{Sept. 2025 -- May 2026}
       \resumeItemListStart
-        \resumeItem{\textbf{Sole engineer} on a Python pipeline converting solar SCADA and weather
-        exports into monthly performance and data health PDFs, built to replace manual reporting.}
-        \resumeItem{Built \textbf{Isolation Forest} anomaly detection on interval performance ratio,
-        power residual, and AC/DC efficiency features rather than raw power output, to reduce false
-        positives from normal sunrise and sunset dips.}
-        \resumeItem{Added rule based fault categories, severity, and recommended actions so
-        operators know what to act on; grouped consecutive \textbf{zero output daylight
-        intervals} into events for reporting.}
+        \resumeItem{\textbf{Sole engineer} on a Python tool that turns raw solar farm sensor and
+        weather data into monthly performance and data quality PDF reports, replacing manual
+        reporting.}
+        \resumeItem{Detected underperforming equipment with \textbf{Isolation Forest} on efficiency
+        based features instead of raw power, so normal sunrise and sunset dips stopped setting off
+        false alarms.}
+        \resumeItem{Labelled each fault by type and severity with a recommended fix, and grouped
+        daylight stretches of zero output into single \textbf{outage events} so operators see what
+        to act on first.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
@@ -193,15 +191,16 @@
       {\href{https://github.com/Kingsolima/Agent-Firewall}{\textbf{Agent Firewall}}}
       {Python, FastAPI, MCP, Claude API}
       \resumeItemListStart
-        \resumeItem{Owned the \textbf{reasoning engine} of an MCP tool-call proxy that allows, flags
-        for human review, or blocks tool calls.}
-        \resumeItem{Combined regex, Claude semantic scoring, and source trust weighting; assessed
-        \textbf{tool call drift} against session intent captured before untrusted content arrived.}
-        \resumeItem{Ran intent extraction and injection detection concurrently with
-        \textbf{asyncio} under per stage timeouts; generated reviewer explanations only for
-        non allow decisions.}
-        \resumeItem{Evaluated 504 calls across 146 scenarios: \textbf{87\% scenario clustered
-        recall} at a 12\% false positive rate, versus 50\% recall at 13\% for a regex baseline.}
+        \resumeItem{Owned the \textbf{FastAPI decision engine} of a security proxy that stops AI
+        agents from being hijacked by \textbf{prompt injection}, allowing, holding for review, or
+        blocking every tool call.}
+        \resumeItem{Checked each action against the user's original request, combining pattern
+        matching with Claude scoring returned as Pydantic validated JSON; calls are blocked if the
+        engine is down.}
+        \resumeItem{Ran checks in parallel with \textbf{asyncio} under per stage timeouts, and moved
+        session state into Postgres after container restarts were wiping it.}
+        \resumeItem{Caught \textbf{87\% of attacks vs.\ 50\%} for a pattern matching baseline at a
+        similar false alarm rate (12\% vs.\ 13\%) across 504 test calls.}
       \resumeItemListEnd
 
     \vspace{3pt}
@@ -209,12 +208,11 @@
       {\href{https://github.com/KingSolima/microbiome-disease-predictor}{\textbf{Microbiome IBD Classifier}}}
       {Python, scikit-learn, XGBoost, FastAPI, React}
       \resumeItemListStart
-        \resumeItem{Compared XGBoost and random forest models with \textbf{L1 logistic feature
-        selection} for Crohn's disease versus ulcerative colitis classification using 2,105 IBD
-        samples and 2,893 species level features.}
-        \resumeItem{Traced an inflated 0.91 ROC-AUC to study overlap across splits and test set
-        exposure during feature selection and tuning; rebuilt with \textbf{cohort grouped
-        cross validation} and fold specific L1 selection, reporting a corrected 0.64.}
+        \resumeItem{Built XGBoost and random forest models to tell \textbf{Crohn's disease from
+        ulcerative colitis} using gut microbiome data (2,105 samples, 2,893 bacterial species).}
+        \resumeItem{Found an early 0.91 ROC-AUC was inflated because the same studies appeared in
+        training and test data; rebuilt the evaluation so each study stayed on one side, giving an
+        \textbf{honest 0.64}.}
       \resumeItemListEnd
 
     \vspace{3pt}
@@ -222,10 +220,11 @@
       {\textbf{SMS/MMS Campaign Tool}}
       {Python, SQLite, Twilio}
       \resumeItemListStart
-        \resumeItem{Built and operated a campaign CLI for a municipal mayoral campaign with
-        \textbf{delivery status reconciliation}, STOP/START opt-out handling, and SQLite backed
-        resumable sends keyed by campaign, contact, and channel.}
-        \resumeItem{Sent \textbf{5k+ MMS messages} in two waves for voter outreach and volunteer recruiting, driving 55 lawn sign opt-ins.}
+        \resumeItem{Built and run a command line tool that sends picture message outreach for a
+        municipal mayoral campaign; sends can be stopped and restarted mid wave without
+        \textbf{texting anyone twice}.}
+        \resumeItem{Sent \textbf{25k+ MMS} across six waves for voter outreach and volunteer recruiting, tracking
+        real carrier delivery and handling STOP/START opt-outs automatically.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd

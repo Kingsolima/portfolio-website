@@ -1,6 +1,6 @@
 ---
 title: Microbiome IBD Classifier
-summary: Can gut microbiome profiles tell Crohn's disease from ulcerative colitis across independent cohorts? A reported 0.91 ROC-AUC turned out to be evaluation leakage; the honest number is 0.64.
+summary: Can gut bacteria tell Crohn's disease from ulcerative colitis? An early 0.91 score turned out to be inflated by a testing mistake; the honest number is 0.64.
 role: "Sole author [TODO: confirm; the README clone URL points at a collaborator's fork]"
 team: "[TODO: solo / course project / collaborators]"
 dates: "[TODO: e.g. Jan to Apr 2026]"
@@ -11,7 +11,7 @@ tags: [ML, Data]
 stack: [Python, scikit-learn, XGBoost, cuML, pandas, FastAPI, React]
 metric:
   value: "0.91 → 0.64"
-  label: "ROC-AUC before and after removing cohort leakage from the evaluation"
+  label: "ROC-AUC before and after stopping the same studies from appearing in both training and test data"
 links:
   repo: https://github.com/KingSolima/microbiome-disease-predictor
   demo: https://microbiome-disease-predictor.vercel.app/

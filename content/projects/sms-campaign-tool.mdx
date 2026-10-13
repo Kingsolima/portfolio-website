@@ -1,10 +1,10 @@
 ---
 title: SMS/MMS Campaign Tool
-summary: A command-line tool for running text-message outreach waves for a municipal mayoral campaign, with resumable sends, carrier-verified delivery tracking, and opt-out handling.
+summary: A command-line tool that sends picture-message outreach for a municipal mayoral campaign, tracks which messages actually arrived, and handles opt-outs automatically.
 role: "Built and operated the tool end to end [TODO: confirm sole engineer]"
 team: "[TODO]"
 dates: "[TODO: e.g. Aug 2026]"
-status: complete
+status: ongoing
 featured: false
 order: 3
 tags: [Backend, Ops]
@@ -15,29 +15,28 @@ confidential: true
 draft: false
 links: {}
 metric:
-  value: "4,180"
-  label: "MMS sent across two waves, 55 lawn sign opt-ins attributed"
+  value: "25k+"
+  label: "MMS sent across six waves for voter outreach and volunteer recruiting"
 ---
 
 {/*
 CLIENT WORK. Gestalt approved a conceptual write-up (Sep 2026): no code, no repo, no client name. Still open:
 - Keep the campaign unnamed. "A municipal mayoral campaign in Ontario" is already on the resume; stop there.
 - Every number below comes from your own notes. Re-check them against the SQLite records before they go live.
-- NOTE: this page says 4,180 MMS. The resume and site.ts both say "5k+". Reconcile the two before either goes out.
+- MMS total updated to 25k+ (Oct 2026). Six waves so far. Fill in the per-wave breakdown from the records. Lawn sign opt-ins removed for now.
 */}
 
-**A Python CLI that ran the text-message side of a municipal mayoral campaign's voter outreach.** Built as a client project during my internship at Gestalt Communications, and operated by me through both send waves. No repository is public, because it was built for a client; this page describes the design.
+**A Python CLI that ran the text-message side of a municipal mayoral campaign's voter outreach.** Built as a client project during my internship at Gestalt Communications, and operated by me through every send wave. No repository is public, because it was built for a client; this page describes the design.
 
 ## At a glance
 
-- **4,180 MMS messages** sent across two waves for voter outreach and volunteer recruitment
-- **55 additional lawn sign opt-ins** attributed to the texts
+- **25k+ MMS messages** sent across six waves so far for voter outreach and volunteer recruitment
 - **90% confirmed delivered** in the first wave, counted from carrier delivery status rather than provider acceptance [TODO: wave 2 figure, and confirm 90% against the records]
-- **Zero double-sends** across two waves and any number of restarts, by design rather than by care [TODO: confirm no duplicates were recorded]
+- **Zero double-sends** across every wave and any number of restarts, by design rather than by care [TODO: confirm no duplicates were recorded]
 
 ## Problem
 
-A campaign has a contact list, a short window, and volunteers rather than engineers. It needs to send a few thousand picture messages, know who actually received them, stop texting anyone who asks, and do it again a week or two later without re-texting people who already answered or opted out. Off-the-shelf tools were [TODO: too expensive / not available in Canada for this use / not flexible enough for MMS with images]. Sending from a script is easy. Sending from a script that can be killed halfway through and restarted safely, and that can tell "Twilio accepted it" from "the phone received it," is the actual job.
+A campaign has a contact list, a short window, and volunteers rather than engineers. It needs to send thousands of picture messages, know who actually received them, stop texting anyone who asks, and do it again a week or two later without re-texting people who already answered or opted out. Off-the-shelf tools were [TODO: too expensive / not available in Canada for this use / not flexible enough for MMS with images]. Sending from a script is easy. Sending from a script that can be killed halfway through and restarted safely, and that can tell "Twilio accepted it" from "the phone received it," is the actual job.
 
 ## Approach
 
@@ -72,19 +71,18 @@ contact list + campaign copy
 
 ## Results
 
-| | Wave 1 | Wave 2 | Total |
-|---|---|---|---|
-| MMS sent | [TODO] | [TODO] | 4,180 |
-| Confirmed delivered | 90% | [TODO] | [TODO] |
-| Opt-outs | [TODO] | [TODO] | [TODO] |
-| Lawn sign opt-ins attributed | | | 55 |
+| | Wave 1 | Wave 2 | Waves 3 to 6 | Total |
+|---|---|---|---|---|
+| MMS sent | [TODO] | [TODO] | [TODO] | 25k+ |
+| Confirmed delivered | 90% | [TODO] | [TODO] | [TODO] |
+| Opt-outs | [TODO] | [TODO] | [TODO] | [TODO] |
 
-**What the numbers do not say.** Attribution is by reply and follow-up, not a controlled experiment; some of the 55 would have asked for a sign anyway. Delivery status is the carrier's word, and "delivered" means the handset acknowledged receipt, not that anyone read it. [TODO: the email channel: was it used in production, and if so, how many sends?]
+**What the numbers do not say.** Delivery status is the carrier's word, and "delivered" means the handset acknowledged receipt, not that anyone read it. [TODO: the email channel: was it used in production, and if so, how many sends?]
 
 ## What I'd do next
 
 - **Move status handling to webhooks** if it was polling, so the records update in real time and a wave report is accurate the moment the wave ends. [TODO: drop if already webhook-based]
-- **Per-wave message variants.** Two waves is enough to A/B copy or imagery on a random split and measure opt-in rate by variant instead of guessing what worked.
+- **Per-wave message variants.** With several waves sent, there is room to A/B copy or imagery on a random split and measure opt-in rate by variant instead of guessing what worked.
 - **Postgres instead of SQLite** the moment more than one operator needs to run sends at once. For one operator and one laptop, SQLite was the right call.
 
 ## Stack
